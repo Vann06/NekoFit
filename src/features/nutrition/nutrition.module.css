@@ -1,0 +1,782 @@
+.nutritionPage {
+  width: min(calc(100% - 2rem), 82rem);
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 4rem) 0 5rem;
+}
+
+.nutritionIntro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.eyebrow,
+.sectionEyebrow,
+.dialogEyebrow {
+  width: fit-content;
+  margin: 0 0 0.9rem;
+  padding: 0.4rem 0.85rem;
+  border: 2px solid var(--color-ink);
+  border-radius: 999px;
+  background: var(--color-lime);
+  box-shadow: 0 4px 0 var(--color-ink);
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.nutritionIntro h1 {
+  max-width: 10ch;
+  font-size: clamp(3.8rem, 8vw, 7rem);
+  line-height: 0.84;
+  letter-spacing: -0.075em;
+}
+
+.nutritionIntro > div:first-child > p:last-child {
+  max-width: 43rem;
+  margin: 1.3rem 0 0;
+  font-size: clamp(1rem, 2vw, 1.17rem);
+  line-height: 1.55;
+}
+
+.introActions {
+  display: grid;
+  justify-items: end;
+  gap: 1rem;
+}
+
+.nutritionTabs {
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 0.35rem;
+  border: 2px solid var(--color-ink);
+  border-radius: 999px;
+  background: #fffdf4;
+  box-shadow: 0 5px 0 var(--color-ink);
+}
+
+.nutritionTabs a {
+  min-width: 7.5rem;
+  padding: 0.65rem 1rem;
+  border-radius: 999px;
+  color: var(--color-ink);
+  font-size: 0.75rem;
+  font-weight: 900;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.nutritionTabs a:hover,
+.nutritionTabs .activeTab {
+  background: var(--color-lime);
+  transform: rotate(-1deg);
+}
+
+.settingsButton {
+  display: inline-flex;
+  min-height: 3.2rem;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 1rem;
+  border: 2px solid var(--color-ink);
+  border-radius: 999px;
+  color: var(--color-ink);
+  background: var(--color-yellow);
+  box-shadow: 0 4px 0 var(--color-ink);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.settingsButton span {
+  display: grid;
+  width: 1.9rem;
+  height: 1.9rem;
+  place-items: center;
+  border-radius: 50%;
+  color: white;
+  background: var(--color-ink);
+}
+
+.dayNavigation,
+.weekHeader {
+  display: grid;
+  width: fit-content;
+  grid-template-columns: auto minmax(13rem, auto) auto;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 0 auto 1.4rem;
+  padding: 0.45rem;
+  border: 2px solid var(--color-ink);
+  border-radius: 999px;
+  background: var(--color-mint);
+  box-shadow: 0 5px 0 var(--color-ink);
+}
+
+.dayNavigation > button,
+.weekHeader > button {
+  display: grid;
+  width: 2.55rem;
+  height: 2.55rem;
+  place-items: center;
+  border: 2px solid var(--color-ink);
+  border-radius: 50%;
+  color: var(--color-ink);
+  background: #fffdf4;
+  font-size: 1.7rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.dayNavigation > div,
+.weekHeader > div {
+  display: grid;
+  text-align: center;
+}
+
+.dayNavigation small,
+.weekHeader small {
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dayNavigation strong,
+.weekHeader strong {
+  font-size: 0.9rem;
+  text-transform: capitalize;
+}
+
+.dailySummary {
+  display: grid;
+  grid-template-columns: minmax(20rem, 0.9fr) minmax(24rem, 1.1fr);
+  gap: 1rem;
+  margin-bottom: 2.8rem;
+}
+
+.calorieSummary,
+.dailyMacros {
+  border: 2px solid var(--color-ink);
+  border-radius: 2rem 1.5rem 2.3rem 1.8rem;
+  box-shadow: 0 7px 0 var(--color-ink);
+}
+
+.calorieSummary {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 1.3rem;
+  padding: 1.15rem;
+  background: var(--color-yellow);
+}
+
+.calorieRing {
+  position: relative;
+  display: grid;
+  width: 9.5rem;
+  height: 9.5rem;
+  place-items: center;
+  border: 2px solid var(--color-ink);
+  border-radius: 46% 54% 48% 52%;
+  background: conic-gradient(var(--color-ink) var(--calorie-progress), #fffdf4 var(--calorie-progress));
+  transform: rotate(-3deg);
+}
+
+.calorieRing::after {
+  position: absolute;
+  inset: 0.75rem;
+  border: 2px solid var(--color-ink);
+  border-radius: 50%;
+  background: var(--color-background);
+  content: "";
+}
+
+.calorieRing > span {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  text-align: center;
+}
+
+.calorieRing strong { font-size: 1.8rem; }
+.calorieRing small { font-size: 0.62rem; font-weight: 900; }
+.calorieSummary > div:last-child { display: grid; gap: 0.15rem; }
+.calorieSummary > div:last-child small { font-size: 0.68rem; font-weight: 900; text-transform: uppercase; }
+.calorieSummary > div:last-child strong { font-size: clamp(1.4rem, 3vw, 2.3rem); }
+.calorieSummary p { margin: 0.35rem 0 0; font-size: 0.78rem; line-height: 1.4; }
+
+.dailyMacros {
+  display: grid;
+  align-content: center;
+  gap: 0.8rem;
+  padding: 1.3rem;
+  background: #fffdf4;
+}
+
+.dailyMacro {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.dailyMacro > span {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.dailyMacro > span b { font-size: 0.75rem; text-transform: none; }
+
+.dailyMacro > i {
+  height: 0.75rem;
+  overflow: hidden;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 999px;
+  background: var(--color-background);
+}
+
+.dailyMacro > i > b { display: block; height: 100%; border-radius: inherit; transition: width 280ms ease; }
+.dailyMacro[data-tone="protein"] > i > b { background: #8f6bb3; }
+.dailyMacro[data-tone="carbs"] > i > b { background: #8abf5b; }
+.dailyMacro[data-tone="fat"] > i > b { background: var(--color-yellow); }
+.dailyMacro[data-tone="fiber"] > i > b { background: #9ed9c3; }
+
+.diaryHeading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.sectionEyebrow {
+  margin-bottom: 0.7rem;
+  background: #eee3fa;
+}
+
+.diaryHeading h2 {
+  margin: 0;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+}
+
+.savedStatus {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.savedStatus i {
+  width: 0.7rem;
+  height: 0.7rem;
+  border: 1px solid var(--color-ink);
+  border-radius: 50%;
+  background: var(--color-lime);
+}
+
+.mealList {
+  display: grid;
+  gap: 1rem;
+}
+
+.mealCard {
+  overflow: hidden;
+  border: 2px solid var(--color-ink);
+  border-radius: 1.5rem 1.2rem 1.7rem 1.35rem;
+  background: #fffdf4;
+  box-shadow: 0 5px 0 var(--color-ink);
+  transition: box-shadow 180ms ease, transform 180ms ease;
+}
+
+.mealCard:hover { box-shadow: 0 8px 0 var(--color-ink); transform: translateY(-2px); }
+
+.mealHeader {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.85rem 1rem;
+  border-bottom: 1.5px solid var(--color-ink);
+  background: var(--color-background);
+}
+
+.mealCard:nth-child(2n) .mealHeader { background: var(--color-mint); }
+
+.mealNumber {
+  display: grid;
+  width: 2.6rem;
+  height: 2.6rem;
+  place-items: center;
+  border: 2px solid var(--color-ink);
+  border-radius: 50%;
+  background: var(--color-yellow);
+  box-shadow: 0 3px 0 var(--color-ink);
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.mealHeader h3 { margin: 0; font-size: 1.18rem; }
+.mealHeader p { margin: 0.15rem 0 0; font-size: 0.65rem; font-weight: 800; opacity: 0.68; }
+.mealHeader > strong { font-size: 0.9rem; }
+
+.foodEntries { padding: 0 1rem; }
+
+.foodEntry {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 3.8rem;
+  border-bottom: 1px dashed rgb(36 69 46 / 28%);
+}
+
+.foodDot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 45% 55%;
+  background: var(--color-lime);
+  transform: rotate(18deg);
+}
+
+.foodEntry > div { display: grid; gap: 0.12rem; }
+.foodEntry > div strong { font-size: 0.84rem; }
+.foodEntry > div small { font-size: 0.62rem; opacity: 0.62; }
+.entryMacros { font-size: 0.72rem; font-weight: 900; white-space: nowrap; }
+.entryMacros b { margin-left: 0.5rem; color: #6d4c85; }
+
+.foodEntry > button {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  color: var(--color-ink);
+  background: transparent;
+  font-size: 1.25rem;
+  transition: background 150ms ease, color 150ms ease;
+}
+
+.foodEntry > button:hover { color: white; background: var(--color-ink); }
+
+.emptyMeal {
+  margin: 0;
+  padding: 1.1rem 0;
+  color: rgb(36 69 46 / 55%);
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.mealFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+}
+
+.mealFooter > span { font-size: 0.65rem; font-weight: 900; }
+
+.mealFooter > button,
+.saveGoalsButton {
+  padding: 0.55rem 0.85rem;
+  border: 2px solid var(--color-ink);
+  border-radius: 999px;
+  color: var(--color-ink);
+  background: var(--color-lime);
+  box-shadow: 0 3px 0 var(--color-ink);
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+.dataCredit,
+.plannerHint {
+  margin: 1.4rem 0 0;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-align: right;
+  opacity: 0.62;
+}
+
+.dialogBackdrop {
+  position: fixed;
+  z-index: 1200;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgb(36 69 46 / 72%);
+  backdrop-filter: blur(5px);
+  animation: backdropIn 180ms ease-out;
+}
+
+.foodDialog,
+.goalsDialog,
+.planDialog {
+  position: relative;
+  width: min(100%, 48rem);
+  max-height: calc(100dvh - 2rem);
+  padding: clamp(1.25rem, 4vw, 2.2rem);
+  overflow: auto;
+  border: 3px solid var(--color-ink);
+  border-radius: 2rem 1.6rem 2.3rem 1.8rem;
+  background: #fffdf4;
+  box-shadow: 10px 12px 0 var(--color-yellow), 16px 19px 0 var(--color-ink);
+  animation: dialogPop 280ms cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+.goalsDialog { width: min(100%, 42rem); }
+.planDialog { width: min(100%, 40rem); }
+
+.closeDialog {
+  position: absolute;
+  z-index: 3;
+  top: 1rem;
+  right: 1rem;
+  display: grid;
+  width: 2.7rem;
+  height: 2.7rem;
+  place-items: center;
+  border: 2px solid var(--color-ink);
+  border-radius: 50%;
+  color: white;
+  background: var(--color-ink);
+  box-shadow: 0 4px 0 #8f6bb3;
+  font-size: 1.4rem;
+}
+
+.dialogEyebrow { margin-bottom: 0.8rem; background: var(--color-yellow); }
+.foodDialog h2,
+.goalsDialog h2,
+.planDialog h2 { max-width: 12ch; margin: 0 0 1.3rem; font-size: clamp(2.3rem, 6vw, 4.2rem); line-height: 0.9; letter-spacing: -0.055em; }
+
+.foodSearchInput {
+  display: flex;
+  min-height: 3.4rem;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 1rem;
+  padding: 0 1rem;
+  border: 2px solid var(--color-ink);
+  border-radius: 999px;
+  background: var(--color-background);
+  box-shadow: 0 4px 0 var(--color-ink);
+}
+
+.foodSearchInput input { width: 100%; border: 0; outline: 0; color: var(--color-ink); background: transparent; font-weight: 800; }
+.foodSearchInput > b { font-size: 1.5rem; }
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.foodResults {
+  display: grid;
+  gap: 0.55rem;
+  max-height: 22rem;
+  overflow-y: auto;
+  padding: 0.25rem 0.25rem 0.25rem 0;
+}
+
+.foodResults > button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.75rem;
+  border: 2px solid var(--color-ink);
+  border-radius: 1rem 1.25rem 0.9rem 1.1rem;
+  color: var(--color-ink);
+  background: var(--color-background);
+  text-align: left;
+  transition: background 150ms ease, transform 150ms ease;
+}
+
+.foodResults > button:hover,
+.foodResults > .selectedFood { background: var(--color-lime); transform: translateX(3px); }
+.foodResults > button > span { display: grid; gap: 0.16rem; }
+.foodResults > button > span strong { font-size: 0.82rem; }
+.foodResults > button > span small { font-size: 0.6rem; opacity: 0.65; }
+.foodResults > button > span:nth-child(2) { font-size: 0.68rem; font-weight: 800; text-align: right; }
+.foodResults > button > i { padding: 0.25rem 0.4rem; border: 1px solid var(--color-ink); border-radius: 999px; background: white; font-size: 0.55rem; font-style: normal; font-weight: 900; }
+
+.foodDialogFooter {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 2px dashed rgb(36 69 46 / 35%);
+}
+
+.foodDialogFooter label { display: grid; grid-template-columns: 5rem auto auto; align-items: center; gap: 0.4rem; }
+.foodDialogFooter label span { font-size: 0.68rem; font-weight: 900; text-transform: uppercase; }
+.foodDialogFooter input { width: 5rem; padding: 0.65rem; border: 2px solid var(--color-ink); border-radius: 0.75rem; background: var(--color-background); font-weight: 900; }
+.foodDialogFooter > button { padding: 0.8rem 1rem; border: 2px solid var(--color-ink); border-radius: 999px; color: var(--color-ink); background: var(--color-yellow); box-shadow: 0 4px 0 var(--color-ink); font-weight: 900; }
+.foodDialogFooter > button:disabled { opacity: 0.45; }
+.apiNote { margin: 1rem 0 0; font-size: 0.62rem; font-weight: 700; opacity: 0.6; }
+
+.goalFields {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.7rem;
+}
+
+.goalFields label,
+.mealGoalFields label {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.7rem;
+  border: 2px solid var(--color-ink);
+  border-radius: 0.9rem 1.2rem 0.8rem 1rem;
+  background: var(--color-background);
+}
+
+.goalFields label span,
+.mealGoalFields label span { font-size: 0.68rem; font-weight: 900; }
+.goalFields input,
+.mealGoalFields input { width: 5rem; padding: 0.5rem; border: 1.5px solid var(--color-ink); border-radius: 0.55rem; background: white; font-weight: 900; }
+.goalFields label b { font-size: 0.62rem; }
+.goalsDialog h3 { margin: 1.5rem 0 0.7rem; }
+.mealGoalFields { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.65rem; }
+.saveGoalsButton { display: block; margin: 1.4rem 0 0 auto; padding: 0.8rem 1.1rem; }
+
+.nutritionToast {
+  position: fixed;
+  z-index: 1300;
+  right: 1rem;
+  bottom: 1rem;
+  display: flex;
+  max-width: min(24rem, calc(100% - 2rem));
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.85rem 1rem;
+  border: 2px solid var(--color-ink);
+  border-radius: 999px;
+  background: var(--color-lime);
+  box-shadow: 0 5px 0 var(--color-ink);
+  font-size: 0.75rem;
+  font-weight: 900;
+  animation: toastIn 260ms ease-out;
+}
+
+.nutritionToast span { display: grid; width: 1.7rem; height: 1.7rem; place-items: center; border-radius: 50%; color: white; background: var(--color-ink); }
+
+.plannerSummary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+}
+
+.plannerSummary > div {
+  display: grid;
+  gap: 0.25rem;
+  padding: 1rem;
+  border: 2px solid var(--color-ink);
+  border-radius: 1.1rem 1.5rem 1rem 1.3rem;
+  background: #fffdf4;
+  box-shadow: 0 5px 0 var(--color-ink);
+}
+
+.plannerSummary > div:nth-child(2) { background: #eee3fa; }
+.plannerSummary > div:nth-child(3) { background: var(--color-mint); }
+.plannerSummary > div:nth-child(4) { background: var(--color-yellow); }
+.plannerSummary small { font-size: 0.62rem; font-weight: 900; text-transform: uppercase; }
+.plannerSummary strong { font-size: 1.35rem; }
+
+.weekPlanner {
+  position: relative;
+  padding: clamp(1rem, 2vw, 1.5rem);
+  border: 2px solid var(--color-ink);
+  border-radius: 2.3rem 1.8rem 2.5rem 2rem;
+  background-color: #fffdf4;
+  background-image: linear-gradient(rgb(36 69 46 / 5%) 1px, transparent 1px), linear-gradient(90deg, rgb(36 69 46 / 5%) 1px, transparent 1px);
+  background-size: 2rem 2rem;
+  box-shadow: 0 10px 0 var(--color-yellow), 0 18px 0 var(--color-ink);
+}
+
+.weekHeader { margin-bottom: 1.2rem; }
+
+.weekGrid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(9.6rem, 1fr));
+  gap: 0.65rem;
+  overflow-x: auto;
+  padding: 0.2rem 0.15rem 0.8rem;
+  scrollbar-width: none;
+}
+
+.weekGrid::-webkit-scrollbar { display: none; }
+
+.dayColumn {
+  min-width: 0;
+  overflow: hidden;
+  border: 2px solid var(--color-ink);
+  border-radius: 1.2rem 0.9rem 1.4rem 1.05rem;
+  background: var(--color-background);
+  box-shadow: 0 4px 0 var(--color-ink);
+}
+
+.todayColumn { background: #eff8d1; box-shadow: 0 6px 0 var(--color-ink); transform: translateY(-2px); }
+
+.dayColumn > header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 0.7rem;
+  border-bottom: 2px solid var(--color-ink);
+  background: var(--color-mint);
+}
+
+.todayColumn > header { background: var(--color-lime); }
+.dayColumn > header span { font-size: 0.65rem; font-weight: 900; text-transform: uppercase; }
+.dayColumn > header strong { grid-row: 1 / span 2; grid-column: 2; font-size: 1.7rem; }
+.dayColumn > header small { font-size: 0.58rem; font-weight: 800; }
+
+.planSlots { display: grid; }
+
+.planSlot {
+  min-height: 5.7rem;
+  padding: 0.55rem;
+  border-bottom: 1px dashed rgb(36 69 46 / 30%);
+}
+
+.planSlot > div:first-child { display: flex; align-items: center; justify-content: space-between; gap: 0.3rem; }
+.planSlot > div:first-child > strong { font-size: 0.58rem; text-transform: uppercase; }
+.planSlot > div:first-child > button { display: grid; width: 1.45rem; height: 1.45rem; place-items: center; border: 1.5px solid var(--color-ink); border-radius: 50%; color: var(--color-ink); background: var(--color-yellow); font-weight: 900; }
+.planSlot > p { margin: 1rem 0 0; color: rgb(36 69 46 / 42%); font-size: 0.62rem; font-weight: 800; text-align: center; }
+
+.plannedItem {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  gap: 0.25rem;
+  margin-top: 0.45rem;
+  padding: 0.5rem;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 0.7rem 0.95rem 0.65rem 0.8rem;
+  background: var(--color-yellow);
+  transform: rotate(-0.6deg);
+}
+
+.plannedItem[data-kind="food"] { background: #eee3fa; transform: rotate(0.5deg); }
+.plannedItem > span { display: grid; gap: 0.2rem; }
+.plannedItem > span strong { font-size: 0.65rem; line-height: 1.15; }
+.plannedItem > span small { font-size: 0.5rem; opacity: 0.65; }
+.plannedItem > button { border: 0; color: var(--color-ink); background: transparent; font-weight: 900; }
+
+.duplicateDayButton {
+  display: block;
+  width: calc(100% - 1rem);
+  margin: 0.65rem auto;
+  padding: 0.45rem;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 999px;
+  color: var(--color-ink);
+  background: #fffdf4;
+  font-size: 0.58rem;
+  font-weight: 900;
+}
+
+.planOptions { display: grid; gap: 0.65rem; }
+
+.planOptions > button {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border: 2px solid var(--color-ink);
+  border-radius: 1rem 1.3rem 0.9rem 1.15rem;
+  color: var(--color-ink);
+  background: var(--color-background);
+  text-align: left;
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.planOptions > button:hover { background: var(--color-lime); transform: translateX(3px); }
+.planOptions > button > span { display: grid; width: 2.2rem; height: 2.2rem; place-items: center; border: 1.5px solid var(--color-ink); border-radius: 50%; color: white; background: #8f6bb3; font-weight: 900; }
+.planOptions > button > div { display: grid; gap: 0.15rem; }
+.planOptions > button > div strong { font-size: 0.8rem; }
+.planOptions > button > div small { font-size: 0.62rem; opacity: 0.65; }
+.planOptions > button > b { font-size: 0.7rem; white-space: nowrap; }
+
+@keyframes backdropIn { from { opacity: 0; } }
+@keyframes dialogPop { from { opacity: 0; transform: translateY(1.5rem) rotate(-1deg) scale(0.95); } }
+@keyframes toastIn { from { opacity: 0; transform: translateY(1rem) scale(0.95); } }
+
+@media (max-width: 980px) {
+  .dailySummary { grid-template-columns: 1fr; }
+  .plannerSummary { grid-template-columns: repeat(2, 1fr); }
+  .weekGrid { grid-template-columns: repeat(7, 11rem); }
+}
+
+@media (max-width: 720px) {
+  .nutritionPage { width: min(calc(100% - 1.3rem), 42rem); padding-top: 1.75rem; }
+  .nutritionIntro { grid-template-columns: 1fr; }
+  .nutritionIntro h1 { font-size: clamp(3.2rem, 15vw, 4.8rem); }
+  .introActions { justify-items: start; }
+  .nutritionTabs { width: 100%; }
+  .nutritionTabs a { min-width: 0; }
+  .settingsButton { width: 100%; justify-content: center; }
+  .dayNavigation { grid-template-columns: auto minmax(10rem, 1fr) auto; width: 100%; }
+  .calorieSummary { grid-template-columns: 8rem 1fr; }
+  .calorieRing { width: 8rem; height: 8rem; }
+  .diaryHeading { align-items: start; flex-direction: column; }
+  .mealHeader { grid-template-columns: auto 1fr; }
+  .mealHeader > strong { grid-column: 2; }
+  .foodEntry { grid-template-columns: auto 1fr auto; }
+  .entryMacros { grid-column: 2; }
+  .foodEntry > button { grid-column: 3; grid-row: 1 / span 2; }
+  .foodDialogFooter { align-items: stretch; flex-direction: column; }
+  .foodDialogFooter > button { width: 100%; }
+  .goalFields,
+  .mealGoalFields { grid-template-columns: 1fr; }
+  .plannerSummary { grid-template-columns: repeat(2, 1fr); }
+  .weekHeader { grid-template-columns: auto 1fr auto; width: 100%; }
+}
+
+@media (max-width: 460px) {
+  .dailySummary { min-width: 0; }
+  .calorieSummary { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  .dailyMacros { padding: 1rem; }
+  .mealFooter { align-items: stretch; flex-direction: column; }
+  .mealFooter > button { width: 100%; }
+  .foodResults > button { grid-template-columns: minmax(0, 1fr) auto; }
+  .foodResults > button > i { grid-column: 1 / -1; width: fit-content; }
+  .foodDialogFooter label { grid-template-columns: 1fr auto auto; }
+  .plannerSummary { grid-template-columns: 1fr 1fr; }
+  .plannerSummary strong { font-size: 1.05rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dialogBackdrop,
+  .foodDialog,
+  .goalsDialog,
+  .planDialog,
+  .nutritionToast {
+    animation: none;
+  }
+}

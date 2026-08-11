@@ -42,24 +42,34 @@ select {
 @media (pointer: fine) {
   html,
   body,
+  body * {
+    cursor: url("/cursors/retro-arrow.svg") 4 3, auto !important;
+  }
+
   a,
   button,
   label,
-  select {
-    cursor: url("/cursors/cat-paw.svg") 12 8, auto;
+  select,
+  summary,
+  [role="button"],
+  [draggable="true"] {
+    cursor: url("/cursors/retro-pointer.svg") 14 3, pointer !important;
   }
 
-  body:active,
-  body:active a,
-  body:active button,
-  body:active label,
-  body:active select {
-    cursor: url("/cursors/cat-paw-grab.svg") 15 12, grabbing;
+  a:active,
+  button:active,
+  label:active,
+  select:active,
+  summary:active,
+  [role="button"]:active,
+  [draggable="true"]:active {
+    cursor: url("/cursors/retro-pointer-click.svg") 14 9, pointer !important;
   }
 
   input,
-  textarea {
-    cursor: text;
+  textarea,
+  [contenteditable="true"] {
+    cursor: text !important;
   }
 }
 
