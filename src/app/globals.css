@@ -1,6 +1,7 @@
 :root {
   --color-background: #fff8e8;
   --color-ink: #24452e;
+  --color-lime: #c9e66b;
   --color-mint: #d5e8c8;
   --color-yellow: #f6dd78;
   --color-white: #ffffff;
@@ -17,9 +18,18 @@ html {
 body {
   min-height: 100vh;
   margin: 0;
+  overflow-x: clip;
   color: var(--color-ink);
   background: var(--color-background);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.site-content {
+  padding-top: 9.2rem;
+}
+
+.tracker-layout {
+  min-height: inherit;
 }
 
 button,
@@ -29,12 +39,40 @@ select {
   font: inherit;
 }
 
+@media (pointer: fine) {
+  html,
+  body,
+  a,
+  button,
+  label,
+  select {
+    cursor: url("/cursors/cat-paw.svg") 12 8, auto;
+  }
+
+  body:active,
+  body:active a,
+  body:active button,
+  body:active label,
+  body:active select {
+    cursor: url("/cursors/cat-paw-grab.svg") 15 12, grabbing;
+  }
+
+  input,
+  textarea {
+    cursor: text;
+  }
+}
+
 .welcome {
   display: grid;
-  min-height: 100vh;
+  min-height: calc(100vh - 9.2rem);
   place-content: center;
   justify-items: center;
+  margin-inline: 1rem;
   padding: 2rem;
+  border: 2px solid var(--color-ink);
+  border-radius: 2.5rem 2.5rem 0 0;
+  background: var(--color-background);
   text-align: center;
 }
 
@@ -62,6 +100,9 @@ h1 {
 }
 
 .retro-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 0.85rem 1.5rem;
   border: 2px solid var(--color-ink);
   border-radius: 999px;
@@ -69,6 +110,7 @@ h1 {
   background: var(--color-yellow);
   box-shadow: 0 6px 0 var(--color-ink);
   font-weight: 800;
+  text-decoration: none;
   cursor: pointer;
   transition: transform 180ms ease, box-shadow 180ms ease;
 }
@@ -86,6 +128,56 @@ h1 {
 .retro-button:focus-visible {
   outline: 3px solid var(--color-white);
   outline-offset: 4px;
+}
+
+.feature-page {
+  display: grid;
+  min-height: calc(100vh - 9.2rem);
+  place-items: center;
+  padding: 2rem;
+}
+
+@media (max-width: 900px) {
+  .site-content {
+    padding-top: 7rem;
+    padding-bottom: 5.5rem;
+  }
+
+  .welcome,
+  .feature-page {
+    min-height: calc(100vh - 12.5rem);
+  }
+
+  .welcome {
+    margin-inline: 0.65rem;
+    border-radius: 1.75rem 1.75rem 0 0;
+  }
+}
+
+.feature-card {
+  width: min(100%, 48rem);
+  padding: clamp(2rem, 7vw, 4.5rem);
+  border: 2px solid var(--color-ink);
+  border-radius: 2.5rem;
+  background: var(--color-white);
+  box-shadow: 12px 12px 0 var(--color-mint);
+  text-align: center;
+}
+
+.feature-card__title {
+  font-size: clamp(3rem, 10vw, 6rem);
+}
+
+.feature-card__description {
+  margin: 1.5rem auto 0;
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  line-height: 1.6;
+}
+
+.feature-card__status {
+  margin: 1.5rem 0 2rem;
+  color: color-mix(in srgb, var(--color-ink) 72%, transparent);
+  font-weight: 700;
 }
 
 @media (prefers-reduced-motion: reduce) {

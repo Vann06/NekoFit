@@ -1,0 +1,1 @@
+# Documentation of Day 1: 

@@ -1,0 +1,397 @@
+.dashboard {
+  width: min(calc(100% - 2rem), 76rem);
+  min-height: calc(100vh - 9.2rem);
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 4rem) 0 3rem;
+}
+
+.dashboardHeader {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.dashboardHeader h1 {
+  max-width: 12ch;
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  line-height: 0.92;
+}
+
+.dashboardHeader > p {
+  max-width: 25rem;
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.55;
+}
+
+.dashboardEyebrow,
+.cardEyebrow {
+  margin: 0 0 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dashboardGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.calorieCard,
+.macroCard,
+.metricCard {
+  color: var(--color-ink);
+  text-decoration: none;
+  transition: box-shadow 180ms ease, transform 180ms ease;
+}
+
+.calorieCard:hover,
+.macroCard:hover,
+.metricCard:hover {
+  box-shadow: 0 10px 0 var(--color-ink);
+  transform: translateY(-4px);
+}
+
+.calorieCard:focus-visible,
+.macroCard:focus-visible,
+.metricCard:focus-visible {
+  outline: 4px solid var(--color-yellow);
+  outline-offset: 4px;
+}
+
+.calorieCard {
+  display: grid;
+  min-height: 22rem;
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.75fr);
+  align-items: center;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  overflow: hidden;
+  border: 2px solid var(--color-ink);
+  border-radius: 2.5rem;
+  background: var(--color-lime);
+  box-shadow: 0 7px 0 var(--color-ink);
+}
+
+.calorieCopy h2 {
+  margin: 0;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  line-height: 0.95;
+}
+
+.calorieNumber {
+  margin: 1.25rem 0 0;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 900;
+}
+
+.calorieNumber span {
+  font-size: clamp(0.9rem, 2vw, 1.15rem);
+  font-weight: 700;
+}
+
+.remainingCalories {
+  width: fit-content;
+  margin: 1rem 0 0;
+  padding: 0.55rem 0.9rem;
+  border: 2px solid var(--color-ink);
+  border-radius: 999px;
+  background: var(--color-background);
+  font-weight: 800;
+}
+
+.catProgress {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.catProgress svg {
+  width: min(100%, 19rem);
+  overflow: visible;
+  fill: var(--color-ink);
+}
+
+.catTrack,
+.catLine {
+  fill: var(--color-background);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 7;
+}
+
+.catTrack {
+  stroke: rgb(36 69 46 / 20%);
+}
+
+.catLine {
+  fill: transparent;
+  stroke: var(--color-ink);
+}
+
+.catProgress strong {
+  position: absolute;
+  bottom: 3.6rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  color: var(--color-background);
+  background: var(--color-ink);
+  font-size: 1.1rem;
+}
+
+.metricCard,
+.macroCard {
+  display: flex;
+  min-height: 15rem;
+  flex-direction: column;
+  padding: 1.5rem;
+  border: 2px solid var(--color-ink);
+  border-radius: 1.75rem;
+  background: #f3ead7;
+  box-shadow: 0 6px 0 var(--color-ink);
+}
+
+.waterCard {
+  background: var(--color-yellow);
+}
+
+.stepsCard {
+  background: var(--color-mint);
+}
+
+.macroCard {
+  gap: 1rem;
+}
+
+.metricLabel {
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.metricValue {
+  margin-top: 0.65rem;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 900;
+}
+
+.metricValue small {
+  font-size: 0.9rem;
+}
+
+.metricVisual {
+  display: grid;
+  min-height: 4rem;
+  align-items: center;
+  margin-block: auto;
+}
+
+.metricDescription {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.macroList {
+  display: grid;
+  gap: 0.85rem;
+  margin-block: auto;
+}
+
+.macroRow {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.macroHeading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.78rem;
+}
+
+.macroHeading strong {
+  font-size: 0.86rem;
+}
+
+.macroHeading > span {
+  white-space: nowrap;
+  font-weight: 800;
+}
+
+.macroTrack {
+  height: 0.7rem;
+  overflow: hidden;
+  border: 1px solid var(--color-ink);
+  border-radius: 999px;
+  background: var(--color-background);
+}
+
+.macroTrack i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.macroTrack .protein {
+  background: #8f6bb3;
+}
+
+.macroTrack .carbs {
+  background: #6c9b55;
+}
+
+.macroTrack .fat {
+  background: #efc84a;
+}
+
+.waterGlasses {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.4rem;
+}
+
+.waterGlasses i {
+  position: relative;
+  width: 1.45rem;
+  height: 1.75rem;
+  overflow: hidden;
+  border: 2px solid var(--color-ink);
+  border-radius: 0.2rem 0.2rem 0.55rem 0.55rem;
+  background: var(--color-background);
+  box-shadow: inset 0 3px 0 rgb(255 255 255 / 70%);
+}
+
+.waterGlasses i::before {
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
+  left: 2px;
+  height: 65%;
+  border-radius: 0.15rem 0.15rem 0.35rem 0.35rem;
+  background: #72bfd1;
+  content: "";
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 320ms cubic-bezier(0.22, 0.9, 0.3, 1.2);
+}
+
+.waterGlasses i::after {
+  position: absolute;
+  top: 0.35rem;
+  left: 0.3rem;
+  width: 0.25rem;
+  height: 0.65rem;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 75%);
+  content: "";
+}
+
+.waterGlasses .glassFilled::before,
+.waterCard:hover .waterGlasses i::before {
+  transform: scaleY(1);
+}
+
+.waterGlasses i:nth-child(2)::before {
+  transition-delay: 40ms;
+}
+
+.waterGlasses i:nth-child(3)::before {
+  transition-delay: 80ms;
+}
+
+.waterGlasses i:nth-child(4)::before {
+  transition-delay: 120ms;
+}
+
+.waterGlasses i:nth-child(5)::before {
+  transition-delay: 160ms;
+}
+
+.waterGlasses i:nth-child(6)::before {
+  transition-delay: 200ms;
+}
+
+.waterGlasses i:nth-child(7)::before {
+  transition-delay: 240ms;
+}
+
+.waterGlasses i:nth-child(8)::before {
+  transition-delay: 280ms;
+}
+
+.pawSteps {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  transform: rotate(-3deg);
+}
+
+.pawSteps svg {
+  width: clamp(1.8rem, 4vw, 2.6rem);
+  fill: var(--color-background);
+  stroke: var(--color-ink);
+  stroke-width: 1.5;
+}
+
+.pawSteps .pawActive {
+  fill: var(--color-ink);
+}
+
+@media (max-width: 760px) {
+  .dashboard {
+    width: min(calc(100% - 1.3rem), 42rem);
+    min-height: calc(100vh - 12.5rem);
+    padding-top: 1.5rem;
+  }
+
+  .dashboardHeader {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .dashboardHeader h1 {
+    font-size: clamp(2.7rem, 14vw, 4.5rem);
+  }
+
+  .dashboardGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .calorieCard {
+    min-height: auto;
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .remainingCalories {
+    margin-inline: auto;
+  }
+
+  .catProgress svg {
+    width: min(100%, 15rem);
+  }
+
+  .catProgress strong {
+    bottom: 2.8rem;
+  }
+
+  .metricCard,
+  .macroCard {
+    min-height: 13rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .calorieCard,
+  .macroCard,
+  .metricCard {
+    transition-duration: 0.01ms;
+  }
+}

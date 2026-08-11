@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function HomePage() {
   return (
     <main className="welcome">
@@ -6,9 +8,9 @@ export default function HomePage() {
       <p className="welcome__description">
         Alimentación, entrenamientos y progreso en un solo lugar.
       </p>
-      <button type="button" className="retro-button">
+      <Link href="/dashboard" className="retro-button">
         Comenzar
-      </button>
+      </Link>
     </main>
   );
 }
