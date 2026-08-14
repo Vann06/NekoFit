@@ -1,0 +1,879 @@
+.page {
+  min-height: calc(100vh - 9.2rem);
+  padding: clamp(1rem, 2.8vw, 2.5rem);
+  background:
+    radial-gradient(circle at 14% 18%, color-mix(in srgb, var(--color-yellow) 45%, transparent) 0 4px, transparent 5px),
+    radial-gradient(circle at 84% 7%, color-mix(in srgb, var(--color-lime) 50%, transparent) 0 5px, transparent 6px),
+    var(--color-background);
+  background-size: 5.5rem 5.5rem, 7rem 7rem, auto;
+}
+
+.page button,
+.page input,
+.page select {
+  color: var(--color-ink);
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(100%, 96rem);
+  margin: 0 auto 1.25rem;
+  padding: clamp(1.2rem, 3vw, 2.5rem) clamp(1.2rem, 4vw, 3rem);
+  border: 2px solid var(--color-ink);
+  border-radius: 2.2rem;
+  background: var(--color-lime);
+  box-shadow: 0 8px 0 var(--color-ink);
+}
+
+.hero p,
+.hero h1,
+.hero span,
+.hero small {
+  margin: 0;
+}
+
+.hero p {
+  width: fit-content;
+  margin-bottom: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 999px;
+  background: var(--color-background);
+  font-size: 0.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.hero h1 {
+  font-size: clamp(2.8rem, 7vw, 5.7rem);
+  line-height: 0.9;
+  letter-spacing: -0.055em;
+}
+
+.heroAdd {
+  display: flex;
+  align-items: center;
+  padding: 0.7rem 1.1rem 0.7rem 0.65rem;
+  gap: 0.55rem;
+  border: 2px solid var(--color-ink);
+  border-radius: 999px;
+  background: var(--color-yellow);
+  box-shadow: 0 5px 0 var(--color-ink);
+  font-weight: 950;
+}
+
+.heroAdd span {
+  display: grid;
+  width: 2.2rem;
+  height: 2.2rem;
+  place-items: center;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 50%;
+  background: var(--color-background);
+  font-size: 1.35rem;
+}
+
+.routineRail {
+  display: flex;
+  width: min(100%, 96rem);
+  margin: 0 auto 1rem;
+  padding: 0.55rem 0.25rem 0.75rem;
+  gap: 0.7rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.routineRail::-webkit-scrollbar,
+.filterRow::-webkit-scrollbar {
+  display: none;
+}
+
+.routineRail > button {
+  display: flex;
+  align-items: center;
+  min-width: max-content;
+  padding: 0.55rem 1rem 0.55rem 0.55rem;
+  gap: 0.55rem;
+  border: 2px solid var(--color-ink);
+  border-radius: 1.25rem;
+  background: #fffdf7;
+  box-shadow: 0 4px 0 var(--color-ink);
+  text-align: left;
+  transition: translate 170ms ease, rotate 170ms ease, background 170ms ease;
+}
+
+.routineRail > button:hover,
+.routineRail > .routineActive {
+  translate: 0 -3px;
+  rotate: -1deg;
+  background: var(--color-mint);
+}
+
+.routineRail > button > span {
+  display: grid;
+  grid-row: 1 / 3;
+  width: 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 50%;
+  background: var(--color-yellow);
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.routineRail strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.workoutSheet {
+  width: min(100%, 96rem);
+  margin: 0 auto;
+  padding: clamp(0.75rem, 1.6vw, 1.3rem);
+  border: 2px solid var(--color-ink);
+  border-radius: 2rem;
+  background: #fffdf7;
+  box-shadow: 9px 10px 0 color-mix(in srgb, var(--color-ink) 82%, transparent);
+}
+
+.sheetHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 0.35rem 1rem;
+  gap: 1rem;
+}
+
+.sheetHeader h2,
+.titleInput {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3.7rem);
+  font-weight: 950;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+
+.titleInput {
+  width: min(100%, 35rem);
+  padding: 0.15rem 0.4rem;
+  border: 0;
+  border-bottom: 3px solid var(--color-ink);
+  background: transparent;
+}
+
+.workoutMeta {
+  display: flex;
+  align-items: center;
+  margin-top: 0.65rem;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+
+.workoutMeta > span,
+.workoutMeta > label,
+.workoutMeta > select {
+  min-height: 2rem;
+  padding: 0.35rem 0.65rem;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 999px;
+  background: var(--color-background);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.workoutMeta input {
+  width: 2.4rem;
+  border: 0;
+  background: transparent;
+  font-weight: 900;
+}
+
+.sheetActions {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.sheetActions button,
+.primaryButton {
+  padding: 0.65rem 0.9rem;
+  border: 1.8px solid var(--color-ink);
+  border-radius: 999px;
+  background: var(--color-background);
+  box-shadow: 0 3px 0 var(--color-ink);
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+
+.sheetActions button:hover,
+.primaryButton:hover {
+  translate: 0 -2px;
+  box-shadow: 0 5px 0 var(--color-ink);
+}
+
+.sheetActions .editButton,
+.primaryButton {
+  background: var(--color-yellow);
+}
+
+.splitBoard {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+.workoutColumn {
+  min-width: 0;
+  overflow: visible;
+  border: 1.8px solid var(--color-ink);
+  border-radius: 1.35rem;
+  background: #f4f2ed;
+}
+
+.columnHeader {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  min-height: 4.2rem;
+  padding: 0.65rem 0.9rem;
+  gap: 0.45rem;
+  border-bottom: 1.8px solid var(--color-ink);
+}
+
+.columnlime .columnHeader { background: var(--color-lime); }
+.columnyellow .columnHeader { background: var(--color-yellow); }
+.columnpurple .columnHeader { background: #d9c7f5; }
+.columncardio .columnHeader { background: #f3c6a8; }
+.columnmint .columnHeader { background: var(--color-mint); }
+
+.columnHeader > span {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 50%;
+  background: #fffdf7;
+  font-size: 0.68rem;
+  font-weight: 950;
+}
+
+.columnHeader h2 {
+  margin: 0;
+}
+
+.columnHeader h2 {
+  font-size: clamp(1.3rem, 2.4vw, 2rem);
+  line-height: 1;
+}
+
+.columnHeader > button {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  padding: 0;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 50%;
+  background: #fffdf7;
+  box-shadow: 0 2px 0 var(--color-ink);
+  font-size: 1.15rem;
+  font-weight: 900;
+}
+
+.columnBody {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  padding: 0.8rem;
+  gap: 0.8rem;
+}
+
+.exerciseCard {
+  overflow: hidden;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 1rem;
+  background: #fffdf7;
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--color-ink) 84%, transparent);
+}
+
+.visualFrame {
+  position: relative;
+  min-height: 18rem;
+  overflow: hidden;
+  border-bottom: 1.5px solid var(--color-ink);
+  background:
+    linear-gradient(135deg, transparent 48%, color-mix(in srgb, var(--color-mint) 35%, transparent) 49% 51%, transparent 52%),
+    #f7f3e8;
+  background-size: 1.2rem 1.2rem;
+}
+
+.exerciseMedia {
+  display: block;
+  width: 100%;
+  height: 18rem;
+  border: 0;
+  background: #f7f3e8;
+  object-fit: contain;
+}
+
+.exerciseFallback {
+  display: grid;
+  width: 100%;
+  height: 18rem;
+  place-items: center;
+  background: var(--color-background);
+}
+
+.exerciseFallback span {
+  display: grid;
+  width: 4.6rem;
+  height: 4.6rem;
+  place-items: center;
+  rotate: -5deg;
+  border: 2px solid var(--color-ink);
+  border-radius: 44% 56% 47% 53%;
+  background: var(--color-mint);
+  box-shadow: 4px 4px 0 var(--color-ink);
+  font-size: 1.25rem;
+  font-weight: 950;
+}
+
+.exerciseFallback svg {
+  width: 68%;
+  max-width: 12rem;
+  overflow: visible;
+  fill: none;
+  stroke: var(--color-ink);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(5px 6px 0 var(--color-mint));
+}
+
+.cardActions {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.35rem;
+  display: flex;
+  gap: 0.2rem;
+}
+
+.cardActions button {
+  display: grid;
+  width: 1.75rem;
+  height: 1.75rem;
+  place-items: center;
+  padding: 0;
+  border: 1.2px solid var(--color-ink);
+  border-radius: 50%;
+  background: #fffdf7;
+  font-weight: 900;
+}
+
+.cardActions button:last-child {
+  background: var(--color-yellow);
+}
+
+.cardActions button:disabled {
+  opacity: 0.35;
+}
+
+.exerciseCopy {
+  min-height: 3.8rem;
+  padding: 0.8rem 0.8rem 0.55rem;
+}
+
+.exerciseCopy h3,
+.exerciseCopy p {
+  margin: 0;
+}
+
+.exerciseCopy h3 {
+  font-size: 1.15rem;
+  line-height: 1.1;
+}
+
+.exerciseNumbers {
+  display: grid;
+  grid-template-columns: minmax(2.6rem, 0.8fr) auto minmax(3.5rem, 1.1fr) auto minmax(4rem, 1.2fr);
+  align-items: end;
+  padding: 0.65rem 0.8rem 0.8rem;
+  gap: 0.35rem;
+  border-top: 1px dashed color-mix(in srgb, var(--color-ink) 50%, transparent);
+}
+
+.exerciseNumbers > b {
+  padding-bottom: 0.45rem;
+  font-size: 0.7rem;
+}
+
+.exerciseNumbers label > span:first-child,
+.cardioNumbers label > span:first-child {
+  display: block;
+  margin-bottom: 0.18rem;
+  font-size: 0.55rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.exerciseNumbers input,
+.cardioNumbers input {
+  width: 100%;
+  min-width: 0;
+  padding: 0.58rem 0.3rem;
+  border: 1px solid var(--color-ink);
+  border-radius: 0.5rem;
+  background: var(--color-background);
+  font-size: 0.9rem;
+  font-weight: 900;
+  text-align: center;
+}
+
+.exerciseNumbers input:disabled,
+.cardioNumbers input:disabled {
+  opacity: 1;
+}
+
+.weightInput,
+.cardioNumbers label > span:last-child {
+  position: relative;
+  display: block;
+}
+
+.weightInput input {
+  padding-right: 1.4rem;
+}
+
+.weightInput i,
+.cardioNumbers i {
+  position: absolute;
+  right: 0.3rem;
+  bottom: 0.45rem;
+  font-size: 0.52rem;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.enableBlock,
+.emptyColumn,
+.removeBlock {
+  width: calc(100% - 1rem);
+  min-height: 5rem;
+  margin: 0.5rem;
+  padding: 0.7rem;
+  border: 1.5px dashed var(--color-ink);
+  border-radius: 0.9rem;
+  background: color-mix(in srgb, var(--color-background) 70%, transparent);
+  font-weight: 850;
+}
+
+.emptyColumn:hover,
+.enableBlock:hover {
+  background: var(--color-mint);
+}
+
+.removeBlock {
+  min-height: auto;
+  margin: 0;
+  border-style: solid;
+  background: transparent;
+  font-size: 0.65rem;
+}
+
+.cardioCard {
+  margin: 0;
+  padding: 0.8rem;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 1rem;
+  background: #fffdf7;
+  box-shadow: 0 3px 0 var(--color-ink);
+  text-align: center;
+}
+
+.cardioIcon {
+  display: grid;
+  width: 5.8rem;
+  height: 5.8rem;
+  place-items: center;
+  margin: 0.2rem auto 0.8rem;
+  rotate: -3deg;
+  border: 2px solid var(--color-ink);
+  border-radius: 45% 55% 50% 46%;
+  background: #f3c6a8;
+  box-shadow: 4px 4px 0 var(--color-ink);
+  font-size: 2.7rem;
+  font-weight: 950;
+}
+
+.cardioCard h3,
+.cardioCard p {
+  margin: 0;
+}
+
+.cardioCard select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 0.65rem;
+  background: var(--color-background);
+  font-weight: 900;
+}
+
+.cardioNumbers {
+  display: grid;
+  margin-top: 0.7rem;
+  gap: 0.5rem;
+  text-align: left;
+}
+
+.cardioNumbers input {
+  padding-right: 2.4rem;
+  text-align: left;
+}
+
+.cardioCard p {
+  margin-top: 0.8rem;
+  padding-top: 0.65rem;
+  border-top: 1px dashed var(--color-ink);
+  font-size: 0.68rem;
+  line-height: 1.35;
+}
+
+.dialogBackdrop {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: color-mix(in srgb, var(--color-ink) 68%, transparent);
+  animation: backdropIn 180ms ease both;
+}
+
+.catalogDialog {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  width: min(100%, 68rem);
+  max-height: min(92vh, 52rem);
+  overflow: hidden;
+  border: 2px solid var(--color-ink);
+  border-radius: 2rem;
+  background: var(--color-background);
+  box-shadow: 10px 12px 0 var(--color-ink);
+  animation: dialogPop 220ms cubic-bezier(.2, .9, .3, 1.2) both;
+}
+
+.dialogHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.2rem;
+  border-bottom: 2px solid var(--color-ink);
+  background: var(--color-lime);
+}
+
+.dialogHeader p,
+.dialogHeader h2 {
+  margin: 0;
+}
+
+.dialogHeader span {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.dialogHeader h2 {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  line-height: 1;
+}
+
+.dialogHeader > button {
+  display: grid;
+  width: 2.7rem;
+  height: 2.7rem;
+  place-items: center;
+  border: 2px solid var(--color-ink);
+  border-radius: 50%;
+  background: var(--color-background);
+  box-shadow: 0 3px 0 var(--color-ink);
+  font-size: 1.5rem;
+}
+
+.searchArea {
+  padding: 0.8rem 1rem;
+  border-bottom: 1.5px solid var(--color-ink);
+  background: #fffdf7;
+}
+
+.searchArea > label {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  border: 2px solid var(--color-ink);
+  border-radius: 999px;
+  background: var(--color-background);
+  box-shadow: 0 3px 0 var(--color-ink);
+}
+
+.searchArea > label span {
+  padding-left: 1rem;
+  font-size: 1.55rem;
+  font-weight: 900;
+}
+
+.searchArea input {
+  width: 100%;
+  padding: 0.8rem 1rem 0.8rem 0.55rem;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-weight: 750;
+}
+
+.filterRow {
+  display: flex;
+  margin-top: 0.65rem;
+  gap: 0.4rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.filterRow button {
+  padding: 0.42rem 0.75rem;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 999px;
+  background: var(--color-background);
+  font-size: 0.72rem;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.filterRow .filterActive {
+  background: var(--color-yellow);
+  box-shadow: 0 2px 0 var(--color-ink);
+}
+
+.searchArea > small {
+  display: block;
+  margin-top: 0.55rem;
+  opacity: 0.68;
+  font-size: 0.65rem;
+}
+
+.exerciseGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding: 0.9rem;
+  gap: 0.7rem;
+  overflow-y: auto;
+}
+
+.catalogCard {
+  min-width: 0;
+  overflow: hidden;
+  padding: 0;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 1rem;
+  background: #fffdf7;
+  box-shadow: 0 3px 0 var(--color-ink);
+  text-align: left;
+  transition: translate 160ms ease, rotate 160ms ease;
+}
+
+.catalogCard:hover {
+  z-index: 1;
+  translate: 0 -4px;
+  rotate: -1deg;
+}
+
+.catalogVisual {
+  position: relative;
+  height: 17rem;
+  overflow: hidden;
+  border-bottom: 1.5px solid var(--color-ink);
+  background: #f5f2e9;
+}
+
+.catalogVisual .exerciseMedia,
+.catalogVisual .exerciseFallback {
+  height: 17rem;
+}
+
+.catalogVisual > span {
+  position: absolute;
+  right: 0.45rem;
+  bottom: 0.45rem;
+  display: grid;
+  width: 2.2rem;
+  height: 2.2rem;
+  place-items: center;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 50%;
+  background: var(--color-yellow);
+  box-shadow: 0 2px 0 var(--color-ink);
+  font-size: 1.2rem;
+  font-weight: 950;
+}
+
+.catalogCard > strong {
+  display: block;
+  margin-inline: 0.65rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.catalogCard > strong {
+  margin-top: 0.65rem;
+  margin-bottom: 0.8rem;
+  font-size: 1.05rem;
+}
+
+.searchStatus {
+  grid-column: 1 / -1;
+  padding: 4rem 1rem;
+  text-align: center;
+  font-weight: 850;
+}
+
+.confirmDialog {
+  width: min(100%, 28rem);
+  padding: 1.5rem;
+  border: 2px solid var(--color-ink);
+  border-radius: 1.6rem;
+  background: var(--color-background);
+  box-shadow: 9px 10px 0 var(--color-ink);
+  text-align: center;
+}
+
+.confirmDialog > span {
+  display: grid;
+  width: 3.5rem;
+  height: 3.5rem;
+  place-items: center;
+  margin: 0 auto;
+  border: 2px solid var(--color-ink);
+  border-radius: 50%;
+  background: var(--color-yellow);
+  font-size: 1.6rem;
+  font-weight: 950;
+}
+
+.confirmDialog h2 {
+  margin-bottom: 0.4rem;
+}
+
+.confirmDialog p {
+  margin-top: 0;
+}
+
+.confirmDialog div {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  gap: 0.5rem;
+}
+
+.confirmDialog button {
+  padding: 0.65rem 0.9rem;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 999px;
+  background: var(--color-background);
+  font-weight: 850;
+}
+
+.confirmDialog button:last-child {
+  background: var(--color-yellow);
+}
+
+.toastStack {
+  position: fixed;
+  z-index: 120;
+  right: 1rem;
+  bottom: 1rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.toastStack > div {
+  display: flex;
+  align-items: center;
+  max-width: min(23rem, calc(100vw - 2rem));
+  padding: 0.7rem 1rem;
+  gap: 0.6rem;
+  border: 2px solid var(--color-ink);
+  border-radius: 999px;
+  box-shadow: 0 4px 0 var(--color-ink);
+  font-weight: 850;
+  animation: toastIn 240ms ease both;
+}
+
+.toastSuccess { background: var(--color-lime); }
+.toastInfo { background: var(--color-yellow); }
+
+.toastStack span {
+  display: grid;
+  width: 1.7rem;
+  height: 1.7rem;
+  place-items: center;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 50%;
+  background: #fffdf7;
+}
+
+@keyframes badgeWiggle {
+  50% { translate: 0 -4px; rotate: -2deg; }
+}
+
+@keyframes backdropIn {
+  from { opacity: 0; }
+}
+
+@keyframes dialogPop {
+  from { opacity: 0; transform: translateY(1.5rem) scale(0.96) rotate(-1deg); }
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(1rem) rotate(2deg); }
+}
+
+@media (max-width: 1120px) {
+  .exerciseGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 760px) {
+  .page { min-height: calc(100vh - 12.5rem); padding: 0.65rem; }
+  .hero { border-radius: 1.55rem; }
+  .sheetHeader { display: grid; }
+  .sheetActions { justify-content: flex-start; }
+  .workoutSheet { border-radius: 1.4rem; box-shadow: 5px 6px 0 var(--color-ink); }
+}
+
+@media (max-width: 520px) {
+  .heroAdd { padding-right: 0.65rem; font-size: 0; }
+  .hero h1 { font-size: clamp(3rem, 15vw, 4.5rem); }
+  .routineRail > button { min-width: 12.5rem; }
+  .columnBody { grid-template-columns: 1fr; }
+  .visualFrame,
+  .exerciseMedia,
+  .exerciseFallback { min-height: 12rem; height: 12rem; }
+  .catalogDialog { max-height: 94vh; border-radius: 1.35rem; }
+  .dialogHeader { padding: 0.8rem; }
+  .exerciseGrid { grid-template-columns: 1fr; }
+  .catalogVisual,
+  .catalogVisual .exerciseMedia,
+  .catalogVisual .exerciseFallback { height: 14rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroAdd { animation: none; }
+}
