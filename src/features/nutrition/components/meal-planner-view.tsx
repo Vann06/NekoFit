@@ -3,11 +3,13 @@
 import { useMemo, useState } from "react";
 
 import { mealDefinitions } from "../data/meal-definitions";
-import { planningOptions } from "../data/planning-options";
 import { useNutritionState } from "../hooks/use-nutrition-state";
-import { addDays, createEmptyPlannedDay, getLocalDateKey, getWeekStart } from "../repositories/nutrition-repository";
-import type { MealKey, PlannedItem } from "../types/nutrition";
+import { addDays, createEmptyDiaryDay, getLocalDateKey, getWeekStart } from "../repositories/nutrition-repository";
+import type { MealKey } from "../types/nutrition";
+import { sumMacros } from "../utils/nutrition-calculations";
 import styles from "../nutrition.module.css";
+import { FoodSearchDialog } from "./nutrition-diary";
+import { MealDetailsDialog } from "./meal-details-dialog";
 import { NutritionTabs } from "./nutrition-tabs";
 
 function formatWeekDay(dateKey: string) {
@@ -16,14 +18,16 @@ function formatWeekDay(dateKey: string) {
 }
 
 export function MealPlannerView() {
-  const { state, addPlannedItem, removePlannedItem, duplicatePlannedDay } = useNutritionState();
+  const { state, addFood, removeFood, duplicateDiaryDay } = useNutritionState();
   const [weekStart, setWeekStart] = useState(() => getWeekStart(getLocalDateKey()));
   const [editingSlot, setEditingSlot] = useState<{ date: string; meal: MealKey } | null>(null);
+  const [detailSlot, setDetailSlot] = useState<{ date: string; meal: MealKey } | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   const weekDates = useMemo(() => Array.from({ length: 7 }, (_, index) => addDays(weekStart, index)), [weekStart]);
-  const weekItems = weekDates.flatMap((date) => Object.values((state.planDays[date] ?? createEmptyPlannedDay(date)).meals).flat());
-  const averageCalories = Math.round(weekItems.reduce((total, item) => total + item.calories, 0) / 7);
-  const averageProtein = Math.round(weekItems.reduce((total, item) => total + item.protein, 0) / 7);
+  const weekItems = weekDates.flatMap((date) => Object.values((state.diaryDays[date] ?? createEmptyDiaryDay(date)).meals).flat());
+  const weekTotals = sumMacros(weekItems);
+  const averageCalories = Math.round(weekTotals.calories / 7);
+  const averageProtein = Math.round(weekTotals.protein / 7);
 
   function showToast(message: string) {
     setToast(message);
@@ -36,7 +40,7 @@ export function MealPlannerView() {
         <div>
           <p className={styles.eyebrow}>Organiza antes de cocinar</p>
           <h1>Tu semana,<br />comida resuelta</h1>
-          <p>Planea alimentos y recetas sin convertir el calendario en una obligación. Después podrás pasar lo planeado a tu diario.</p>
+          <p>Calendario y diario comparten los mismos alimentos. Lo que agregues aquí aparecerá también en Alimentación y en el dashboard de ese día.</p>
         </div>
         <div className={styles.introActions}><NutritionTabs active="planner" /></div>
       </header>
@@ -57,28 +61,32 @@ export function MealPlannerView() {
 
         <div className={styles.weekGrid}>
           {weekDates.map((date) => {
-            const day = state.planDays[date] ?? createEmptyPlannedDay(date);
+            const day = state.diaryDays[date] ?? createEmptyDiaryDay(date);
             const dayItems = Object.values(day.meals).flat();
-            const totalCalories = dayItems.reduce((total, item) => total + item.calories, 0);
+            const totalCalories = sumMacros(dayItems).calories;
             const formatted = formatWeekDay(date);
             return (
               <article key={date} className={`${styles.dayColumn} ${date === getLocalDateKey() ? styles.todayColumn : ""}`}>
                 <header><span>{formatted.day}</span><strong>{formatted.date}</strong><small>{totalCalories} kcal</small></header>
                 <div className={styles.planSlots}>
-                  {mealDefinitions.map((meal) => (
-                    <section key={meal.key} className={styles.planSlot}>
-                      <div><strong>{meal.shortLabel}</strong><button type="button" aria-label={`Agregar a ${meal.label} del ${date}`} onClick={() => setEditingSlot({ date, meal: meal.key })}>+</button></div>
-                      {day.meals[meal.key].length === 0 && <p>Sin planear</p>}
-                      {day.meals[meal.key].map((item) => (
-                        <div key={item.id} className={styles.plannedItem} data-kind={item.kind}>
-                          <span><strong>{item.title}</strong><small>{item.calories} kcal · {item.protein} g P</small></span>
-                          <button type="button" aria-label={`Quitar ${item.title}`} onClick={() => removePlannedItem(date, meal.key, item.id)}>×</button>
-                        </div>
-                      ))}
-                    </section>
-                  ))}
+                  {mealDefinitions.map((meal) => {
+                    const entries = day.meals[meal.key];
+                    const mealCalories = sumMacros(entries).calories;
+                    return (
+                      <section key={meal.key} className={styles.planSlot}>
+                        <div><strong>{meal.shortLabel}</strong><button type="button" aria-label={`Agregar a ${meal.label} del ${date}`} onClick={() => setEditingSlot({ date, meal: meal.key })}>+</button></div>
+                        {entries.length === 0 && <p>Sin registrar</p>}
+                        {entries.map((entry) => (
+                          <div key={entry.id} className={styles.plannedItem} data-kind="food">
+                            <span><strong>{entry.food.name}</strong><small>{entry.macros.calories} kcal</small></span>
+                          </div>
+                        ))}
+                        {entries.length > 0 && <button type="button" className={styles.slotSummaryButton} onClick={() => setDetailSlot({ date, meal: meal.key })}>{mealCalories} kcal · Ver detalle</button>}
+                      </section>
+                    );
+                  })}
                 </div>
-                <button type="button" className={styles.duplicateDayButton} onClick={() => { duplicatePlannedDay(date, addDays(date, 1)); showToast(`Copiamos ${formatted.day} al día siguiente.`); }}>Duplicar →</button>
+                <button type="button" className={styles.duplicateDayButton} onClick={() => { duplicateDiaryDay(date, addDays(date, 1)); showToast(`Copiamos ${formatted.day} al día siguiente.`); }}>Duplicar →</button>
               </article>
             );
           })}
@@ -86,29 +94,9 @@ export function MealPlannerView() {
         <p className={styles.plannerHint}>Desliza horizontalmente para ver toda la semana. El scroll se mantiene limpio y sin barra visible.</p>
       </section>
 
-      {editingSlot && <PlanItemDialog onClose={() => setEditingSlot(null)} onAdd={(item) => { addPlannedItem(editingSlot.date, editingSlot.meal, item); setEditingSlot(null); showToast(`${item.title} se agregó al plan.`); }} />}
+      {editingSlot && <FoodSearchDialog meal={editingSlot.meal} onClose={() => setEditingSlot(null)} onAdd={(food, grams, amount, measureLabel) => { addFood(editingSlot.date, editingSlot.meal, food, grams, amount, measureLabel); setEditingSlot(null); showToast(`${food.name} se agregó al ${editingSlot.date}.`); }} />}
+      {detailSlot && <MealDetailsDialog mealLabel={mealDefinitions.find((meal) => meal.key === detailSlot.meal)?.label ?? "Comida"} calorieGoal={state.goals.mealCalories[detailSlot.meal]} entries={(state.diaryDays[detailSlot.date] ?? createEmptyDiaryDay(detailSlot.date)).meals[detailSlot.meal]} onClose={() => setDetailSlot(null)} onRemove={(entryId) => removeFood(detailSlot.date, detailSlot.meal, entryId)} />}
       {toast && <div className={styles.nutritionToast} role="status"><span>✓</span>{toast}</div>}
     </main>
-  );
-}
-
-function PlanItemDialog({ onClose, onAdd }: { onClose: () => void; onAdd: (item: Omit<PlannedItem, "id">) => void }) {
-  return (
-    <div className={styles.dialogBackdrop} role="presentation" onPointerDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
-      <section className={styles.planDialog} role="dialog" aria-modal="true" aria-labelledby="plan-item-title">
-        <button type="button" className={styles.closeDialog} aria-label="Cerrar opciones" onClick={onClose}>×</button>
-        <p className={styles.dialogEyebrow}>Planifica en segundos</p>
-        <h2 id="plan-item-title">Elige una comida</h2>
-        <div className={styles.planOptions}>
-          {planningOptions.map((item) => (
-            <button key={item.title} type="button" onClick={() => onAdd(item)}>
-              <span aria-hidden="true">{item.kind === "recipe" ? "R" : "A"}</span>
-              <div><strong>{item.title}</strong><small>{item.subtitle}</small></div>
-              <b>{item.calories} kcal</b>
-            </button>
-          ))}
-        </div>
-      </section>
-    </div>
   );
 }

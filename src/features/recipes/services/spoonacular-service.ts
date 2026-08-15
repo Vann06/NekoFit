@@ -78,26 +78,9 @@ function isSimpleMealPrep(recipe: MealPrepRecipe) {
 }
 
 export async function getMealPrepRecipes(): Promise<RecipeLoadResult> {
-  const proxyUrl = process.env.NEXT_PUBLIC_SPOONACULAR_PROXY_URL?.trim();
-  if (!proxyUrl) return { recipes: mealPrepRecipes, mode: "curated" };
-
   try {
-    const requestUrl = new URL(proxyUrl);
-    requestUrl.searchParams.set("query", "simple meal prep");
-    requestUrl.searchParams.set("type", "main course");
-    requestUrl.searchParams.set("number", "12");
-    requestUrl.searchParams.set("instructionsRequired", "true");
-    requestUrl.searchParams.set("addRecipeInformation", "true");
-    requestUrl.searchParams.set("addRecipeInstructions", "true");
-    requestUrl.searchParams.set("addRecipeNutrition", "true");
-    requestUrl.searchParams.set("minProtein", "25");
-    requestUrl.searchParams.set("maxFat", "25");
-    requestUrl.searchParams.set("maxReadyTime", "40");
-    requestUrl.searchParams.set("sort", "protein");
-    requestUrl.searchParams.set("sortDirection", "desc");
-
-    const response = await fetch(requestUrl);
-    if (!response.ok) throw new Error(`Spoonacular proxy respondió ${response.status}`);
+    const response = await fetch("/api/recipes", { headers: { Accept: "application/json" } });
+    if (!response.ok) throw new Error(`Spoonacular respondió ${response.status}`);
     const data = await response.json() as SpoonacularResponse;
     const recipes = (data.results ?? []).map(mapRecipe).filter(isSimpleMealPrep);
     if (recipes.length < 3) throw new Error("La búsqueda no devolvió suficientes recetas simples.");

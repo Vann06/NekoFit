@@ -59,6 +59,6 @@ export type WorkoutPlan = {
 };
 
 export type WorkoutsState = {
-  version: 2;
+  version: 3;
   workouts: WorkoutPlan[];
 };

@@ -1,12 +1,29 @@
+"use client";
+
 import { CalorieCatCard } from "./calorie-cat-card";
 import { MacroCard } from "./macro-card";
 import { MetricCard } from "./metric-card";
 import { PawIcon } from "./paw-icon";
+import { WaterCard } from "./water-card";
 import { todaySummary } from "../data/today-summary";
+import { useNutritionState } from "../../nutrition/hooks/use-nutrition-state";
+import { createEmptyDiaryDay, getLocalDateKey } from "../../nutrition/repositories/nutrition-repository";
+import { sumMacros } from "../../nutrition/utils/nutrition-calculations";
 import styles from "../dashboard.module.css";
 
 export function DashboardView() {
-  const { calories, macros, water, steps } = todaySummary;
+  const { state, updateWater } = useNutritionState();
+  const today = getLocalDateKey();
+  const diary = state.diaryDays[today] ?? createEmptyDiaryDay(today);
+  const totals = sumMacros(Object.values(diary.meals).flat());
+  const calories = { consumed: totals.calories, goal: state.goals.calories };
+  const macros = [
+    { label: "Proteína", current: totals.protein, goal: state.goals.protein, unit: "g" as const, tone: "protein" as const },
+    { label: "Carbohidratos", current: totals.carbs, goal: state.goals.carbs, unit: "g" as const, tone: "carbs" as const },
+    { label: "Grasas", current: totals.fat, goal: state.goals.fat, unit: "g" as const, tone: "fat" as const },
+  ];
+  const water = { current: state.waterByDate[today] ?? 0, goal: state.goals.waterGlasses };
+  const { steps } = todaySummary;
 
   return (
     <main className={styles.dashboard}>
@@ -23,20 +40,7 @@ export function DashboardView() {
 
         <MacroCard macros={macros} />
 
-        <MetricCard
-          href="/nutrition"
-          label="Agua"
-          value={`${water.current}/${water.goal}`}
-          unit="vasos"
-          description={`${water.goal - water.current} vasos para tu meta`}
-          variant="water"
-        >
-          <span className={styles.waterGlasses}>
-            {Array.from({ length: water.goal }, (_, index) => (
-              <i key={index} className={index < water.current ? styles.glassFilled : undefined} />
-            ))}
-          </span>
-        </MetricCard>
+        <WaterCard current={water.current} goal={water.goal} onChange={(nextValue) => updateWater(today, nextValue)} />
 
         <MetricCard
           href="/progress"

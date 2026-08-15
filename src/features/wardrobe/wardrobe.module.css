@@ -1,44 +1,41 @@
 .wardrobePage {
-  width: min(calc(100% - 2rem), 82rem);
+  width: min(calc(100% - 2rem), 76rem);
   margin: 0 auto;
-  padding: clamp(2rem, 5vw, 4rem) 0 5rem;
+  padding: clamp(1.5rem, 4vw, 3.5rem) 0 5rem;
 }
 
 .pageIntro {
   display: flex;
-  align-items: end;
+  align-items: center;
   justify-content: space-between;
-  gap: 2rem;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
+  padding: clamp(1.2rem, 3vw, 2.4rem);
+  gap: 1rem;
+  border: 2px solid var(--color-ink);
+  border-radius: 2.25rem;
+  background: var(--color-lime);
+  box-shadow: 0 8px 0 var(--color-ink);
 }
 
 .eyebrow,
 .editorEyebrow {
   width: fit-content;
-  margin: 0 0 0.85rem;
-  padding: 0.4rem 0.85rem;
-  border: 2px solid var(--color-ink);
+  margin: 0 0 0.7rem;
+  padding: 0.35rem 0.8rem;
+  border: 1.5px solid var(--color-ink);
   border-radius: 999px;
-  background: var(--color-yellow);
-  box-shadow: 0 4px 0 var(--color-ink);
-  font-size: 0.72rem;
+  background: var(--color-background);
+  font-size: 0.68rem;
   font-weight: 900;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 .pageIntro h1 {
-  max-width: 10ch;
-  font-size: clamp(3.8rem, 8vw, 7rem);
+  margin: 0;
+  font-size: clamp(3.5rem, 8vw, 6.8rem);
   line-height: 0.82;
-  letter-spacing: -0.07em;
-}
-
-.pageIntro > div > p:last-child {
-  max-width: 38rem;
-  margin: 1.3rem 0 0;
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  line-height: 1.5;
+  letter-spacing: -0.065em;
 }
 
 .addGarmentButton,
@@ -47,183 +44,186 @@
   border: 2px solid var(--color-ink);
   color: var(--color-ink);
   font-weight: 900;
-  cursor: pointer;
 }
 
 .addGarmentButton {
   display: inline-flex;
-  min-height: 3.6rem;
+  min-height: 3.7rem;
   flex: 0 0 auto;
   align-items: center;
-  gap: 0.65rem;
   padding: 0.65rem 1.1rem 0.65rem 0.65rem;
+  gap: 0.6rem;
   border-radius: 999px;
-  background: var(--color-lime);
-  box-shadow: 0 6px 0 var(--color-ink);
-  text-transform: uppercase;
-  transition: transform 180ms ease, box-shadow 180ms ease;
+  background: var(--color-yellow);
+  box-shadow: 0 5px 0 var(--color-ink);
+  transition: translate 160ms ease, box-shadow 160ms ease;
 }
 
 .addGarmentButton span {
   display: grid;
-  width: 2.1rem;
-  height: 2.1rem;
+  width: 2.15rem;
+  height: 2.15rem;
   place-items: center;
+  border: 1.5px solid var(--color-ink);
   border-radius: 50%;
-  color: var(--color-background);
-  background: var(--color-ink);
-  font-size: 1.5rem;
+  background: var(--color-background);
+  font-size: 1.35rem;
 }
 
 .addGarmentButton:hover {
-  box-shadow: 0 9px 0 var(--color-ink);
-  transform: translateY(-3px);
+  translate: 0 -3px;
+  box-shadow: 0 8px 0 var(--color-ink);
 }
 
-.gameBoard {
-  display: grid;
-  grid-template-columns: minmax(26rem, 1.35fr) minmax(18rem, 0.65fr);
-  align-items: start;
-  gap: clamp(1rem, 3vw, 2.5rem);
-  padding: clamp(1rem, 2.5vw, 2rem);
+.outfitMixer {
+  position: relative;
+  width: min(100%, 44rem);
+  margin: 0 auto;
   overflow: hidden;
   border: 2px solid var(--color-ink);
-  border-radius: 2.5rem 2rem 2.8rem 2.15rem;
-  background-color: #fffdf4;
-  background-image: radial-gradient(circle, rgb(143 107 179 / 28%) 0 0.22rem, transparent 0.25rem);
-  background-size: 3.8rem 3.8rem;
-  box-shadow: 0 10px 0 var(--color-yellow), 0 19px 0 var(--color-ink);
-  animation: dotsTravel 14s linear infinite;
+  border-radius: 2.5rem 2rem 2.7rem 2.15rem;
+  background:
+    radial-gradient(circle, rgb(143 107 179 / 22%) 0 0.18rem, transparent 0.21rem),
+    #fffdf4;
+  background-size: 3.4rem 3.4rem;
+  box-shadow: 0 10px 0 var(--color-yellow), 0 18px 0 var(--color-ink);
+  animation: dotsTravel 18s linear infinite;
 }
 
-.leftCloset {
-  display: grid;
-  gap: 1.35rem;
+.outfitMixer::before,
+.outfitMixer::after {
+  position: absolute;
+  z-index: 2;
+  width: 5rem;
+  height: 1.4rem;
+  content: "";
+  background: rgb(246 221 120 / 72%);
+  rotate: -7deg;
 }
 
-.rack {
-  min-width: 0;
-  padding-bottom: 0.75rem;
-  border-bottom: 3px solid var(--color-ink);
+.outfitMixer::before { top: 0.6rem; left: -1rem; }
+.outfitMixer::after { top: 0.7rem; right: -1rem; rotate: 7deg; }
+
+.mixerHeading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 1rem 1.15rem;
+  gap: 0.8rem;
+  border-bottom: 2px solid var(--color-ink);
+  background: var(--color-yellow);
 }
 
-.rackHeader {
+.mixerHeading h2 {
+  margin: 0;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+}
+
+.mixerHeading span {
+  font-size: 1.4rem;
+  animation: sparkle 1.8s ease-in-out infinite alternate;
+}
+
+.carouselStack {
+  padding: 0.25rem clamp(0.75rem, 3vw, 1.5rem);
+}
+
+.carouselSlot {
+  padding: 0.8rem 0 1rem;
+  border-bottom: 2px dashed color-mix(in srgb, var(--color-ink) 55%, transparent);
+}
+
+.carouselSlot:last-child {
+  border-bottom: 0;
+}
+
+.carouselSlot > header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
-  margin-bottom: 0.75rem;
+  max-width: 28rem;
+  margin: 0 auto 0.35rem;
 }
 
-.rackHeader h2,
-.rackHeader p {
-  margin: 0;
-}
-
-.rackHeader h2 {
-  font-size: 1.15rem;
-}
-
-.rackHeader p {
-  margin-top: 0.1rem;
+.carouselSlot > header span {
+  padding: 0.3rem 0.75rem;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 999px;
   font-size: 0.68rem;
-  opacity: 0.7;
+  font-weight: 900;
+  text-transform: uppercase;
 }
 
-.rackHeader > span {
-  letter-spacing: 0.18em;
+.slotTops > header span { background: var(--color-lime); }
+.slotBottoms > header span { background: #d9c7f5; }
+.slotZapatos > header span { background: var(--color-mint); }
+
+.carouselSlot > header small {
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
 }
 
-.garmentCarousel {
+.carouselControls {
   display: grid;
-  grid-template-columns: 2.6rem minmax(0, 1fr) 2.6rem;
+  grid-template-columns: 3.4rem minmax(0, 22rem) 3.4rem;
   align-items: center;
-  gap: 0.45rem;
+  justify-content: center;
+  gap: 0.75rem;
 }
 
 .carouselArrow {
   display: grid;
-  width: 2.6rem;
-  height: 2.6rem;
+  width: 3.4rem;
+  height: 3.4rem;
   place-items: center;
-  padding: 0 0 0.15rem;
+  padding: 0;
   border: 2px solid var(--color-ink);
   border-radius: 50%;
   color: var(--color-background);
   background: var(--color-ink);
-  box-shadow: 0 3px 0 #8f6bb3;
-  font-size: 2rem;
+  box-shadow: 0 4px 0 #8f6bb3;
+  font-size: 1.55rem;
   font-weight: 900;
-  line-height: 1;
-  cursor: pointer;
-  transition: color 160ms ease, background 160ms ease, transform 160ms ease;
+  transition: translate 160ms ease, rotate 160ms ease, color 160ms ease, background 160ms ease;
 }
 
 .carouselArrow:hover {
   color: var(--color-ink);
   background: var(--color-lime);
-  transform: translateY(-2px) rotate(-5deg);
+  translate: 0 -3px;
+  rotate: -5deg;
 }
 
-.carouselArrow:last-child:hover {
-  transform: translateY(-2px) rotate(5deg);
-}
+.carouselArrow:last-child:hover { rotate: 5deg; }
+.carouselArrow:disabled { opacity: 0.3; }
 
-.carouselArrow:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.garmentItem {
+.garmentCard {
   position: relative;
-  width: min(100%, 12rem);
+  display: grid;
+  justify-items: center;
   min-width: 0;
-  justify-self: center;
-  transform: rotate(var(--sticker-angle));
-  animation: garmentEnter 420ms cubic-bezier(0.22, 0.9, 0.3, 1.15) backwards;
-}
-
-.dragHandle {
-  display: block;
-  width: 100%;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  cursor: grab;
-  touch-action: none;
-  transform-origin: 50% 0;
-  animation: selectedSwing 2.4s ease-in-out infinite alternate;
-  transition: transform 180ms ease, filter 180ms ease;
-}
-
-.dragHandle:hover,
-.dragHandle:focus-visible {
-  outline: none;
-  filter: drop-shadow(0 7px 0 rgb(36 69 46 / 22%));
-  animation-play-state: paused;
-  transform: translateY(-4px) scale(1.04);
-}
-
-.dragHandle:active {
-  cursor: grabbing;
+  animation: garmentPop 300ms cubic-bezier(0.2, 0.9, 0.3, 1.16) both;
 }
 
 .garmentPicture {
   display: block;
-  width: 100%;
+  width: min(100%, 13rem);
   aspect-ratio: 1;
   background-repeat: no-repeat;
   background-position: center;
+  filter:
+    drop-shadow(4px 0 0 #fffdf4)
+    drop-shadow(-4px 0 0 #fffdf4)
+    drop-shadow(0 4px 0 #fffdf4)
+    drop-shadow(0 -4px 0 #fffdf4)
+    drop-shadow(7px 9px 0 rgb(36 69 46 / 22%));
 }
 
-.garmentItem .garmentPicture {
-  filter:
-    drop-shadow(3px 0 0 #fffdf4)
-    drop-shadow(-3px 0 0 #fffdf4)
-    drop-shadow(0 3px 0 #fffdf4)
-    drop-shadow(0 -3px 0 #fffdf4)
-    drop-shadow(5px 7px 0 rgb(36 69 46 / 25%));
-}
+.slotBottoms .garmentPicture { width: min(100%, 12.5rem); }
+.slotZapatos .garmentPicture { width: min(100%, 11rem); }
 
 .spritePicture {
   background-image: url("/images/wardrobe/wardrobe-sprite.png");
@@ -235,14 +235,30 @@
   background-size: contain;
 }
 
+.garmentCard strong {
+  position: relative;
+  z-index: 2;
+  max-width: 100%;
+  margin-top: -0.25rem;
+  padding: 0.4rem 0.85rem;
+  overflow: hidden;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 999px;
+  background: var(--color-background);
+  box-shadow: 0 3px 0 var(--color-ink);
+  font-size: 0.8rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .deleteGarment {
   position: absolute;
-  z-index: 3;
-  top: -0.15rem;
-  right: -0.15rem;
+  z-index: 4;
+  top: 0.25rem;
+  right: 1.5rem;
   display: grid;
-  width: 1.75rem;
-  height: 1.75rem;
+  width: 2rem;
+  height: 2rem;
   place-items: center;
   padding: 0;
   border: 2px solid var(--color-ink);
@@ -250,187 +266,49 @@
   color: var(--color-background);
   background: #8f6bb3;
   box-shadow: 0 2px 0 var(--color-ink);
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 900;
-  cursor: pointer;
-  transition: transform 160ms ease;
+  transition: rotate 160ms ease, scale 160ms ease;
 }
 
 .deleteGarment:hover {
-  transform: rotate(8deg) scale(1.12);
+  rotate: 8deg;
+  scale: 1.12;
 }
 
-.emptyRack {
-  grid-column: 1 / -1;
+.emptySlot {
+  display: grid;
+  min-height: 11rem;
+  place-items: center;
   margin: 0;
-  padding: 1.5rem;
   border: 2px dashed var(--color-ink);
-  border-radius: 1rem;
-  font-size: 0.75rem;
-  text-align: center;
+  border-radius: 1.5rem;
+  font-weight: 900;
 }
 
-.fittingRoom {
-  padding: 0.8rem;
-  border: 2px solid var(--color-ink);
-  border-radius: 1.8rem 1.5rem 2rem 1.6rem;
-  background: rgb(243 234 215 / 88%);
-  box-shadow: 7px 8px 0 var(--color-ink);
-}
-
-.stageMessage {
+.mixerFooter {
   display: flex;
-  min-height: 2.75rem;
   align-items: center;
-  gap: 0.65rem;
-  padding: 0.55rem 0.8rem;
-  border: 1.5px solid var(--color-ink);
-  border-radius: 999px;
-  background: var(--color-background);
-  font-size: 0.75rem;
-  font-weight: 900;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  gap: 1rem;
+  border-top: 2px solid var(--color-ink);
+  background: var(--color-mint);
 }
 
-.stageMessage span {
-  width: 0.72rem;
-  height: 0.72rem;
-  flex: 0 0 auto;
-  border: 1px solid var(--color-ink);
-  border-radius: 50%;
-  background: var(--color-lime);
-}
-
-.outfitCanvas {
-  position: relative;
-  min-height: 21rem;
-  margin-top: 0.75rem;
-  overflow: hidden;
-  border: 2px dashed #8f6bb3;
-  border-radius: 2rem 2.8rem 1.8rem 2.4rem;
-  background:
-    linear-gradient(90deg, transparent 49.8%, rgb(143 107 179 / 15%) 50%, transparent 50.2%),
-    linear-gradient(180deg, #fffdf4, #f6dd78 155%);
-  transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
-}
-
-.outfitCanvasReady {
-  border-color: var(--color-ink);
-  background: radial-gradient(circle, var(--color-lime), #fffdf4 70%);
-  transform: scale(1.01);
-}
-
-.canvasTitle {
-  position: absolute;
-  top: 1.25rem;
-  left: 50%;
+.mixerFooter p {
   margin: 0;
-  padding: 0.4rem 0.85rem;
-  border: 1.5px solid var(--color-ink);
-  border-radius: 999px;
-  background: var(--color-yellow);
-  font-size: 0.7rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  transform: translateX(-50%) rotate(-1deg);
-}
-
-.dropMessage {
-  position: absolute;
-  z-index: 9;
-  top: 4rem;
-  left: 50%;
-  padding: 0.35rem 0.75rem;
-  border: 1.5px solid var(--color-ink);
-  border-radius: 999px;
-  opacity: 0;
-  background: var(--color-lime);
-  font-size: 0.65rem;
-  font-weight: 900;
-  transform: translate(-50%, -0.5rem);
-  transition: opacity 180ms ease, transform 180ms ease;
-}
-
-.outfitCanvasReady .dropMessage {
-  opacity: 1;
-  transform: translate(-50%, 0);
-}
-
-.emptyCanvas {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 80%;
-  margin: 0;
-  color: rgb(36 69 46 / 55%);
-  font-size: clamp(1.1rem, 3vw, 1.7rem);
-  font-weight: 900;
-  line-height: 1.35;
-  text-align: center;
-  transform: translate(-50%, -50%) rotate(-2deg);
-}
-
-.wornItem {
-  position: absolute;
-  z-index: 3;
-  width: 8.25rem;
-  filter:
-    drop-shadow(3px 0 0 #fffdf4)
-    drop-shadow(-3px 0 0 #fffdf4)
-    drop-shadow(0 3px 0 #fffdf4)
-    drop-shadow(0 -3px 0 #fffdf4)
-    drop-shadow(7px 9px 0 rgb(36 69 46 / 22%));
-  animation: outfitPop 280ms ease-out;
-}
-
-.wornTop {
-  top: 4%;
-  left: 50%;
-  transform: translateX(-50%) rotate(-4deg);
-}
-
-.wornBottom {
-  top: 34%;
-  left: 50%;
-  transform: translateX(-50%) rotate(3deg);
-}
-
-.wornShoes {
-  bottom: -1%;
-  left: 50%;
-  width: 8rem;
-  transform: translateX(-50%) rotate(-2deg);
+  font-size: 0.78rem;
+  font-weight: 750;
 }
 
 .resetButton {
-  display: block;
-  min-width: 8rem;
-  min-height: 3rem;
-  margin: 0.8rem auto 0;
+  min-width: 7rem;
+  min-height: 2.8rem;
   border-radius: 999px;
-  background: var(--color-lime);
+  background: var(--color-yellow);
   box-shadow: 0 4px 0 var(--color-ink);
   text-transform: uppercase;
-}
-
-.resetButton:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.dragGhost {
-  position: fixed;
-  z-index: 999;
-  top: var(--drag-y);
-  left: var(--drag-x);
-  width: 8.5rem;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-}
-
-.draggedPicture {
-  transform-origin: 50% 0;
-  filter: drop-shadow(0 8px 4px rgb(36 69 46 / 28%));
-  animation: draggingSwing 520ms ease-in-out infinite alternate;
 }
 
 .toast,
@@ -457,15 +335,8 @@
   gap: 0.6rem;
 }
 
-.confirmToast div {
-  display: grid;
-  gap: 0.2rem;
-}
-
-.confirmToast small {
-  font-weight: 500;
-  opacity: 0.8;
-}
+.confirmToast div { display: grid; gap: 0.2rem; }
+.confirmToast small { font-weight: 500; opacity: 0.8; }
 
 .confirmToast button {
   min-height: 2.4rem;
@@ -476,7 +347,6 @@
   background: transparent;
   font-size: 0.7rem;
   font-weight: 900;
-  cursor: pointer;
 }
 
 .confirmToast button:last-child {
@@ -504,7 +374,7 @@
   border-radius: 2rem 1.4rem 2.2rem 1.6rem;
   background: #fffdf4;
   box-shadow: 10px 12px 0 var(--color-ink);
-  transform: rotate(-0.7deg);
+  rotate: -0.7deg;
 }
 
 .editorCard h2 {
@@ -524,7 +394,6 @@
   color: var(--color-background);
   background: var(--color-ink);
   font-size: 1.4rem;
-  cursor: pointer;
 }
 
 .editorCard form,
@@ -554,9 +423,7 @@
   background: var(--color-background);
 }
 
-.fileField {
-  grid-column: 1 / -1;
-}
+.fileField { grid-column: 1 / -1; }
 
 .fileField input {
   position: absolute;
@@ -573,14 +440,12 @@
   border: 2px dashed var(--color-ink);
   border-radius: 1rem;
   background: var(--color-mint);
-  cursor: pointer;
 }
 
 .editorPreview {
   width: 8rem;
   grid-column: 1 / -1;
   justify-self: center;
-  border: 2px solid var(--color-ink);
   border-radius: 1rem;
   background-color: #f3ead7;
 }
@@ -604,91 +469,75 @@
 
 @keyframes dotsTravel {
   from { background-position: 0 0; }
-  to { background-position: 7.6rem 3.8rem; }
+  to { background-position: 6.8rem 3.4rem; }
 }
 
-@keyframes garmentEnter {
-  from { opacity: 0; scale: 0.9; translate: 0 -0.75rem; }
-  to { opacity: 1; scale: 1; translate: 0 0; }
+@keyframes sparkle {
+  to { rotate: 16deg; scale: 1.15; }
 }
 
-@keyframes selectedSwing {
-  from { rotate: -2.5deg; translate: 0 0; }
-  to { rotate: 2.5deg; translate: 0 -0.15rem; }
-}
-
-@keyframes draggingSwing {
-  from { transform: rotate(-9deg); }
-  to { transform: rotate(9deg); }
-}
-
-@keyframes outfitPop {
-  from { opacity: 0; scale: 0.8; }
-  to { opacity: 1; scale: 1; }
+@keyframes garmentPop {
+  from { opacity: 0; translate: 1rem 0; scale: 0.94; rotate: 2deg; }
+  to { opacity: 1; translate: 0; scale: 1; rotate: 0deg; }
 }
 
 @keyframes toastPop {
-  from { opacity: 0; transform: translateY(1rem) scale(0.92); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-@media (max-width: 820px) {
-  .gameBoard {
-    grid-template-columns: 1fr;
-  }
-
-  .leftCloset {
-    order: 2;
-  }
-
-  .fittingRoom {
-    order: 1;
-  }
-
-  .garmentItem {
-    width: min(100%, 10rem);
-  }
+  from { opacity: 0; translate: 0 1rem; scale: 0.92; }
+  to { opacity: 1; translate: 0; scale: 1; }
 }
 
 @media (max-width: 560px) {
   .wardrobePage {
     width: min(calc(100% - 1.3rem), 42rem);
-    padding-top: 1.75rem;
+    padding-top: 1rem;
   }
 
   .pageIntro {
-    align-items: center;
-    gap: 1rem;
+    padding: 1.2rem;
+    border-radius: 1.65rem;
   }
 
   .pageIntro h1 {
-    font-size: clamp(3.2rem, 15vw, 4.7rem);
-  }
-
-  .pageIntro > div > p:last-child {
-    font-size: 0.88rem;
+    font-size: clamp(3rem, 15vw, 4.5rem);
   }
 
   .addGarmentButton {
-    width: 4rem;
-    height: 4rem;
+    width: 3.7rem;
+    height: 3.7rem;
     justify-content: center;
     padding: 0;
     font-size: 0;
   }
 
-  .gameBoard {
-    padding: 0.75rem;
-    border-radius: 1.6rem;
+  .outfitMixer { border-radius: 1.6rem; }
+  .mixerHeading { padding-block: 1.2rem 0.9rem; }
+
+  .carouselStack {
+    padding-inline: 0.6rem;
   }
 
-  .outfitCanvas {
-    min-height: 19rem;
+  .carouselControls {
+    grid-template-columns: 2.65rem minmax(0, 1fr) 2.65rem;
+    gap: 0.35rem;
   }
 
-  .wornItem {
-    width: 7.5rem;
+  .carouselArrow {
+    width: 2.65rem;
+    height: 2.65rem;
+    font-size: 1.15rem;
   }
+
+  .garmentPicture { width: min(100%, 10rem); }
+  .slotBottoms .garmentPicture { width: min(100%, 9.6rem); }
+  .slotZapatos .garmentPicture { width: min(100%, 8.8rem); }
+  .deleteGarment { right: 0.5rem; }
+
+  .mixerFooter {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .mixerFooter p { text-align: center; }
 
   .confirmToast {
     right: 0.75rem;
@@ -697,28 +546,18 @@
     grid-template-columns: 1fr 1fr;
   }
 
-  .confirmToast div {
-    grid-column: 1 / -1;
-  }
-
-  .editorCard form {
-    grid-template-columns: 1fr;
-  }
-
+  .confirmToast div { grid-column: 1 / -1; }
+  .editorCard form { grid-template-columns: 1fr; }
   .fileField,
   .editorPreview,
   .editorError,
-  .saveGarmentButton {
-    grid-column: 1;
-  }
+  .saveGarmentButton { grid-column: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .gameBoard,
-  .garmentItem,
-  .dragHandle,
-  .draggedPicture,
-  .wornItem,
+  .outfitMixer,
+  .mixerHeading span,
+  .garmentCard,
   .toast,
   .confirmToast {
     animation: none;

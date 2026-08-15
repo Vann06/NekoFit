@@ -4,7 +4,7 @@ import { WorkoutsStudio } from "@/features/workouts/components/workouts-studio";
 
 export const metadata: Metadata = {
   title: "Entrenamientos | NekoFit",
-  description: "Crea y edita entrenamientos por bloques con ejercicios, fuerza, cardio y cooldown.",
+  description: "Hojea, crea y edita rutinas visuales para seguirlas rápidamente en el gimnasio.",
 };
 
 export default function WorkoutsPage() {

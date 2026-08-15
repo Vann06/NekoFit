@@ -1,4 +1,5 @@
 import { localExerciseCatalog } from "../data/workout-options";
+import { legacyWorkoutXExerciseIds, workoutXStarterExercises } from "../data/workoutx-starter-exercises";
 import type { CardioConfig, WorkoutExercise, WorkoutPlan, WorkoutsState } from "../types/workout";
 
 const databaseName = "nekofit-workouts";
@@ -6,7 +7,7 @@ const storeName = "workouts-state";
 const stateId = "main";
 
 function catalogExercise(id: string) {
-  const exercise = localExerciseCatalog.find((item) => item.id === id);
+  const exercise = [...workoutXStarterExercises, ...localExerciseCatalog].find((item) => item.id === id);
   if (!exercise) throw new Error(`No existe el ejercicio inicial ${id}`);
   return exercise;
 }
@@ -46,18 +47,18 @@ function createStarterWorkouts(): WorkoutPlan[] {
       coreEnabled: true,
       blocks: {
         warmup: [
-          workoutExercise("lower-warmup-1", "local-leg-swings", { sets: 2, reps: "10/lado" }),
-          workoutExercise("lower-warmup-2", "local-cat-cow", { sets: 1, reps: "8" }),
+          workoutExercise("lower-warmup-1", "workoutx-0003", { sets: 1, reps: "5 min" }),
+          workoutExercise("lower-warmup-2", "workoutx-0257", { sets: 2, reps: "10/lado" }),
         ],
         main: [
-          workoutExercise("lower-main-1", "local-squat", { sets: 4, reps: "8", weightKg: 30 }),
-          workoutExercise("lower-main-2", "local-hip-thrust", { sets: 4, reps: "10", weightKg: 45 }),
-          workoutExercise("lower-main-3", "local-rdl", { sets: 3, reps: "10", weightKg: 30 }),
+          workoutExercise("lower-main-1", "workoutx-0026", { sets: 4, reps: "8", weightKg: 30 }),
+          workoutExercise("lower-main-2", "workoutx-1409", { sets: 4, reps: "10", weightKg: 45 }),
+          workoutExercise("lower-main-3", "workoutx-0085", { sets: 3, reps: "10", weightKg: 30 }),
         ],
-        core: [workoutExercise("lower-core-1", "local-dead-bug", { sets: 3, reps: "10/lado" })],
+        core: [workoutExercise("lower-core-1", "workoutx-0276", { sets: 3, reps: "10/lado" })],
         cooldown: [
-          workoutExercise("lower-cool-1", "local-quad-stretch", { sets: 2, reps: "30 s/lado" }),
-          workoutExercise("lower-cool-2", "local-child-pose", { sets: 1, reps: "60 s" }),
+          workoutExercise("lower-cool-1", "workoutx-0613", { sets: 2, reps: "30 s/lado" }),
+          workoutExercise("lower-cool-2", "workoutx-0690", { sets: 1, reps: "60 s" }),
         ],
       },
       cardio: cardio({ machine: "stairmaster", durationMinutes: 12, speed: 0, incline: 0, level: 6, notes: "Sin apoyarte en las barandas." }),
@@ -72,13 +73,16 @@ function createStarterWorkouts(): WorkoutPlan[] {
       estimatedMinutes: 55,
       coreEnabled: false,
       blocks: {
-        warmup: [workoutExercise("upper-warmup-1", "local-cat-cow", { sets: 2, reps: "8" })],
+        warmup: [workoutExercise("upper-warmup-1", "workoutx-1167", { sets: 2, reps: "12" })],
         main: [
-          workoutExercise("upper-main-1", "local-row", { sets: 4, reps: "10", weightKg: 25 }),
-          workoutExercise("upper-main-2", "local-press", { sets: 4, reps: "8", weightKg: 12 }),
+          workoutExercise("upper-main-1", "workoutx-0180", { sets: 4, reps: "10", weightKg: 25 }),
+          workoutExercise("upper-main-2", "workoutx-0289", { sets: 4, reps: "8", weightKg: 12 }),
         ],
         core: [],
-        cooldown: [workoutExercise("upper-cool-1", "local-child-pose", { sets: 2, reps: "45 s" })],
+        cooldown: [
+          workoutExercise("upper-cool-1", "workoutx-0643", { sets: 2, reps: "30 s/lado" }),
+          workoutExercise("upper-cool-2", "workoutx-0669", { sets: 2, reps: "30 s/lado" }),
+        ],
       },
       cardio: cardio({ enabled: false, durationMinutes: 0, speed: 0, incline: 0, notes: "" }),
       createdAt: now,
@@ -92,14 +96,14 @@ function createStarterWorkouts(): WorkoutPlan[] {
       estimatedMinutes: 40,
       coreEnabled: true,
       blocks: {
-        warmup: [workoutExercise("full-warmup-1", "local-leg-swings", { sets: 1, reps: "12/lado" })],
+        warmup: [workoutExercise("full-warmup-1", "workoutx-0003", { sets: 1, reps: "5 min" })],
         main: [
-          workoutExercise("full-main-1", "local-squat", { sets: 3, reps: "10", weightKg: 20 }),
-          workoutExercise("full-main-2", "local-row", { sets: 3, reps: "12", weightKg: 20 }),
-          workoutExercise("full-main-3", "local-press", { sets: 3, reps: "10", weightKg: 10 }),
+          workoutExercise("full-main-1", "workoutx-0026", { sets: 3, reps: "10", weightKg: 20 }),
+          workoutExercise("full-main-2", "workoutx-0180", { sets: 3, reps: "12", weightKg: 20 }),
+          workoutExercise("full-main-3", "workoutx-0289", { sets: 3, reps: "10", weightKg: 10 }),
         ],
-        core: [workoutExercise("full-core-1", "local-plank", { sets: 3, reps: "35 s" })],
-        cooldown: [workoutExercise("full-cool-1", "local-child-pose", { sets: 1, reps: "60 s" })],
+        core: [workoutExercise("full-core-1", "workoutx-0464", { sets: 3, reps: "12" })],
+        cooldown: [workoutExercise("full-cool-1", "workoutx-0690", { sets: 1, reps: "60 s" })],
       },
       cardio: cardio({ durationMinutes: 8, speed: 5.5, incline: 4, notes: "Caminata ligera para cerrar." }),
       createdAt: now,
@@ -109,7 +113,7 @@ function createStarterWorkouts(): WorkoutPlan[] {
 }
 
 export function createInitialWorkoutsState(): WorkoutsState {
-  return { version: 2, workouts: createStarterWorkouts() };
+  return { version: 3, workouts: createStarterWorkouts() };
 }
 
 export function createBlankWorkout(): WorkoutPlan {
@@ -152,17 +156,19 @@ function migrateState(state: { version?: number; workouts?: WorkoutPlan[] }): Wo
   const workouts = state.workouts.map((workout) => ({
     ...workout,
     blocks: {
-      warmup: workout.blocks.warmup.map(simplifyEntry),
-      main: workout.blocks.main.map(simplifyEntry),
-      core: workout.blocks.core.map(simplifyEntry),
-      cooldown: workout.blocks.cooldown.map(simplifyEntry),
+      warmup: workout.blocks.warmup.map(migrateEntry),
+      main: workout.blocks.main.map(migrateEntry),
+      core: workout.blocks.core.map(migrateEntry),
+      cooldown: workout.blocks.cooldown.map(migrateEntry),
     },
   }));
-  return { version: 2, workouts };
+  return { version: 3, workouts };
 }
 
-function simplifyEntry(entry: WorkoutExercise): WorkoutExercise {
-  return { id: entry.id, exercise: entry.exercise, sets: entry.sets, reps: entry.reps, weightKg: entry.weightKg };
+function migrateEntry(entry: WorkoutExercise): WorkoutExercise {
+  const replacementId = legacyWorkoutXExerciseIds[entry.exercise.id];
+  const exercise = replacementId ? catalogExercise(replacementId) : entry.exercise;
+  return { id: entry.id, exercise, sets: entry.sets, reps: entry.reps, weightKg: entry.weightKg };
 }
 
 function openDatabase() {
@@ -189,7 +195,7 @@ export async function getWorkoutsState(fallback: WorkoutsState) {
   database.close();
   const migrated = record?.state ? migrateState(record.state) : null;
   if (migrated) {
-    if (record?.state.version !== 2) await saveWorkoutsState(migrated);
+    if (record?.state.version !== 3) await saveWorkoutsState(migrated);
     return migrated;
   }
   await saveWorkoutsState(fallback);

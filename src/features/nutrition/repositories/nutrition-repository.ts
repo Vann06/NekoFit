@@ -88,17 +88,19 @@ function createInitialPlan(weekStart: string) {
 
 export function createInitialNutritionState(today = getLocalDateKey()): NutritionState {
   return {
-    version: 1,
+    version: 2,
     goals: {
       calories: 1900,
       protein: 120,
       carbs: 210,
       fat: 60,
       fiber: 28,
+      waterGlasses: 8,
       mealCalories: { preWorkout: 150, breakfast: 400, postWorkout: 200, lunch: 550, snack: 200, dinner: 400 },
     },
     diaryDays: { [today]: createInitialDiaryDay(today) },
     planDays: createInitialPlan(getWeekStart(today)),
+    waterByDate: { [today]: 5 },
   };
 }
 
@@ -125,7 +127,18 @@ export async function getNutritionState(fallbackState: NutritionState) {
   const transaction = database.transaction(storeName, "readonly");
   const record = await requestResult(transaction.objectStore(storeName).get(stateId)) as { id: string; state: NutritionState } | undefined;
   database.close();
-  if (record?.state?.version === 1) return record.state;
+  if (record?.state?.version === 2) return record.state;
+  if (record?.state?.version === 1) {
+    const previousState = record.state as unknown as Omit<NutritionState, "version" | "waterByDate"> & { version: 1; goals: Omit<NutritionState["goals"], "waterGlasses"> };
+    const migratedState: NutritionState = {
+      ...previousState,
+      version: 2,
+      goals: { ...previousState.goals, waterGlasses: fallbackState.goals.waterGlasses },
+      waterByDate: fallbackState.waterByDate,
+    };
+    await saveNutritionState(migratedState);
+    return migratedState;
+  }
   await saveNutritionState(fallbackState);
   return fallbackState;
 }

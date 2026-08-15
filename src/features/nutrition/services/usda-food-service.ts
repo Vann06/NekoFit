@@ -1,12 +1,23 @@
 import { commonFoods, foodSearchTranslations } from "../data/food-catalog";
-import type { FoodItem, MacroValues } from "../types/nutrition";
+import type { FoodItem, FoodMeasure, MacroValues } from "../types/nutrition";
 
 type UsdaNutrient = { nutrientName?: string; value?: number; unitName?: string };
-type UsdaFood = { fdcId: number; description: string; dataType?: string; foodNutrients?: UsdaNutrient[] };
+type UsdaMeasure = { disseminationText?: string; gramWeight?: number; amount?: number; modifier?: string };
+type UsdaFood = {
+  fdcId: number;
+  description: string;
+  dataType?: string;
+  brandOwner?: string;
+  servingSize?: number;
+  servingSizeUnit?: string;
+  householdServingFullText?: string;
+  foodMeasures?: UsdaMeasure[];
+  foodNutrients?: UsdaNutrient[];
+};
 type UsdaSearchResponse = { foods?: UsdaFood[] };
 type CachedSearch = { expiresAt: number; foods: FoodItem[] };
 
-const cachePrefix = "nekofit-usda-cache-v2:";
+const cachePrefix = "nekofit-usda-cache-v3:";
 const cacheDuration = 7 * 24 * 60 * 60 * 1000;
 
 function normalizeSearch(query: string) {
@@ -28,6 +39,32 @@ function getCalories(nutrients: UsdaNutrient[]) {
   return kilojoules?.value != null ? kilojoules.value / 4.184 : 0;
 }
 
+function getMeasures(food: UsdaFood): FoodMeasure[] {
+  const measures: FoodMeasure[] = [
+    { id: "grams", label: "gramos", grams: 1 },
+    { id: "ounces", label: "onza (oz)", grams: 28.3495 },
+  ];
+
+  for (const [index, measure] of (food.foodMeasures ?? []).entries()) {
+    if (!measure.gramWeight || measure.gramWeight <= 0) continue;
+    const label = measure.disseminationText || measure.modifier;
+    if (!label) continue;
+    measures.push({ id: `usda-measure-${index}`, label, grams: measure.gramWeight });
+  }
+
+  if (food.servingSize && food.servingSize > 0 && food.servingSizeUnit?.toLowerCase() === "g") {
+    measures.push({
+      id: "label-serving",
+      label: food.householdServingFullText || "porción del empaque",
+      grams: food.servingSize,
+    });
+  }
+
+  return measures.filter((measure, index, allMeasures) => (
+    allMeasures.findIndex((candidate) => candidate.label === measure.label && Math.abs(candidate.grams - measure.grams) < 0.01) === index
+  ));
+}
+
 function mapUsdaFood(food: UsdaFood): FoodItem | null {
   const nutrients = food.foodNutrients ?? [];
   const macros: MacroValues = {
@@ -43,9 +80,10 @@ function mapUsdaFood(food: UsdaFood): FoodItem | null {
   return {
     id: `usda-${food.fdcId}`,
     name: readableName,
-    detail: `${food.dataType ?? "FoodData Central"} · valores por 100 g`,
+    detail: `${food.brandOwner || food.dataType || "FoodData Central"} · valores por 100 g`,
     servingLabel: "100 g",
     servingGrams: 100,
+    measures: getMeasures(food),
     macrosPer100g: macros,
     source: "USDA",
   };
@@ -72,27 +110,24 @@ function cacheSearch(query: string, foods: FoodItem[]) {
 
 export async function searchFoods(query: string) {
   const normalizedQuery = query.trim().toLocaleLowerCase("es");
-  const localMatches = commonFoods.filter((food) => `${food.name} ${food.detail}`.toLocaleLowerCase("es").includes(normalizedQuery));
-  if (normalizedQuery.length < 2) return localMatches.length > 0 ? localMatches : commonFoods.slice(0, 8);
-
-  const apiQuery = normalizeSearch(query);
+  const localMatches = normalizedQuery.length >= 2
+    ? commonFoods.filter((food) => `${food.name} ${food.detail}`.toLocaleLowerCase("es").includes(normalizedQuery))
+    : [];
+  const apiQuery = normalizedQuery.length >= 2 ? normalizeSearch(query) : "nekofit-starters";
   const cachedFoods = getCachedSearch(apiQuery);
-  if (cachedFoods) return [...localMatches, ...cachedFoods].filter((food, index, foods) => foods.findIndex((item) => item.id === food.id) === index).slice(0, 10);
+  if (cachedFoods) return [...cachedFoods, ...localMatches].filter((food, index, foods) => foods.findIndex((item) => item.id === food.id) === index).slice(0, normalizedQuery.length >= 2 ? 18 : 24);
 
   try {
-    const configuredProxy = process.env.NEXT_PUBLIC_USDA_PROXY_URL?.trim();
-    const requestUrl = new URL(configuredProxy || "https://api.nal.usda.gov/fdc/v1/foods/search");
-    if (!configuredProxy) requestUrl.searchParams.set("api_key", "DEMO_KEY");
-    requestUrl.searchParams.set("query", apiQuery);
-    requestUrl.searchParams.set("pageSize", "8");
-    requestUrl.searchParams.set("dataType", "Foundation,SR Legacy,Survey (FNDDS)");
+    const requestUrl = new URL("/api/foods", window.location.origin);
+    if (normalizedQuery.length >= 2) requestUrl.searchParams.set("query", apiQuery);
+    requestUrl.searchParams.set("limit", normalizedQuery.length >= 2 ? "16" : "24");
 
     const response = await fetch(requestUrl);
     if (!response.ok) throw new Error(`USDA respondió ${response.status}`);
     const data = await response.json() as UsdaSearchResponse;
     const remoteFoods = (data.foods ?? []).map(mapUsdaFood).filter((food): food is FoodItem => food !== null);
     cacheSearch(apiQuery, remoteFoods);
-    return [...localMatches, ...remoteFoods].filter((food, index, foods) => foods.findIndex((item) => item.id === food.id) === index).slice(0, 10);
+    return [...remoteFoods, ...localMatches].filter((food, index, foods) => foods.findIndex((item) => item.id === food.id) === index).slice(0, normalizedQuery.length >= 2 ? 18 : 24);
   } catch {
     return localMatches.length > 0 ? localMatches : commonFoods.slice(0, 8);
   }

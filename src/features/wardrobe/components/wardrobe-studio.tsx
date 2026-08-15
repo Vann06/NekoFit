@@ -1,147 +1,126 @@
 "use client";
 
-import {
-  type CSSProperties,
-  type FormEvent,
-  type PointerEvent as ReactPointerEvent,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { type FormEvent, useEffect, useState } from "react";
 
 import { defaultGarments } from "../data/default-garments";
 import { deleteWardrobeItem, getWardrobeItems, saveWardrobeItem } from "../repositories/wardrobe-repository";
-import type { GarmentImage, Outfit, WardrobeCategory, WardrobeItem } from "../types/wardrobe-item";
+import type { GarmentImage, WardrobeCategory, WardrobeItem } from "../types/wardrobe-item";
 import { GarmentPicture } from "./garment-picture";
 import styles from "../wardrobe.module.css";
 
 const categories: WardrobeCategory[] = ["Tops", "Bottoms", "Zapatos"];
-const emptyOutfit: Outfit = { Tops: null, Bottoms: null, Zapatos: null };
-
-type DragState = { item: WardrobeItem; pointerId: number; x: number; y: number; overStage: boolean };
+const initialIndexes: Record<WardrobeCategory, number> = { Tops: 0, Bottoms: 0, Zapatos: 0 };
+const categoryLabels: Record<WardrobeCategory, string> = {
+  Tops: "Top",
+  Bottoms: "Parte inferior",
+  Zapatos: "Zapatos",
+};
 
 export function WardrobeStudio() {
   const [items, setItems] = useState<WardrobeItem[]>(defaultGarments);
-  const [outfit, setOutfit] = useState<Outfit>(emptyOutfit);
-  const [dragging, setDragging] = useState<DragState | null>(null);
+  const [activeIndexes, setActiveIndexes] = useState(initialIndexes);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [pendingDelete, setPendingDelete] = useState<WardrobeItem | null>(null);
-  const [message, setMessage] = useState("Arrastra una prenda al lienzo");
   const [toast, setToast] = useState<string | null>(null);
-  const stageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    getWardrobeItems().then(setItems).catch(() => setToast("No pudimos abrir IndexedDB; usarás el armario de esta sesión."));
+    getWardrobeItems().then(setItems).catch(() => setToast("Usaremos el armario de esta sesión."));
   }, []);
 
   useEffect(() => {
     if (!toast) return;
-    const timeoutId = window.setTimeout(() => setToast(null), 3200);
+    const timeoutId = window.setTimeout(() => setToast(null), 3000);
     return () => window.clearTimeout(timeoutId);
   }, [toast]);
 
-  function isOverStage(x: number, y: number) {
-    const bounds = stageRef.current?.getBoundingClientRect();
-    return Boolean(bounds && x >= bounds.left && x <= bounds.right && y >= bounds.top && y <= bounds.bottom);
+  function itemsByCategory(category: WardrobeCategory) {
+    return items.filter((item) => item.category === category);
   }
 
-  function startDragging(event: ReactPointerEvent<HTMLButtonElement>, item: WardrobeItem) {
-    event.preventDefault();
-    event.currentTarget.setPointerCapture(event.pointerId);
-    setDragging({ item, pointerId: event.pointerId, x: event.clientX, y: event.clientY, overStage: false });
-    setMessage(`Moviendo ${item.name}`);
-  }
-
-  function moveDragging(event: ReactPointerEvent<HTMLButtonElement>) {
-    setDragging((currentDrag) => currentDrag?.pointerId === event.pointerId
-      ? { ...currentDrag, x: event.clientX, y: event.clientY, overStage: isOverStage(event.clientX, event.clientY) }
-      : currentDrag);
-  }
-
-  function finishDragging(event: ReactPointerEvent<HTMLButtonElement>, item: WardrobeItem) {
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
-    if (isOverStage(event.clientX, event.clientY)) {
-      setOutfit((currentOutfit) => ({ ...currentOutfit, [item.category]: item }));
-      setMessage(`${item.name} forma parte del look`);
-    } else {
-      setMessage("Suelta la prenda dentro del lienzo");
-    }
-    setDragging(null);
+  function cycle(category: WardrobeCategory, direction: -1 | 1) {
+    const categoryItems = itemsByCategory(category);
+    if (categoryItems.length < 2) return;
+    setActiveIndexes((current) => ({
+      ...current,
+      [category]: (current[category] + direction + categoryItems.length) % categoryItems.length,
+    }));
   }
 
   async function createItem(item: WardrobeItem) {
     await saveWardrobeItem(item);
+    const categoryLength = itemsByCategory(item.category).length;
     setItems((currentItems) => [...currentItems, item]);
+    setActiveIndexes((current) => ({ ...current, [item.category]: categoryLength }));
     setIsEditorOpen(false);
-    setToast("Prenda guardada en tu armario ✦");
+    setToast("Prenda añadida al carrusel ✦");
   }
 
   async function confirmDelete() {
     if (!pendingDelete) return;
     const item = pendingDelete;
     await deleteWardrobeItem(item.id);
+    const remainingInCategory = itemsByCategory(item.category).filter((currentItem) => currentItem.id !== item.id).length;
     setItems((currentItems) => currentItems.filter((currentItem) => currentItem.id !== item.id));
-    setOutfit((currentOutfit) => ({
-      ...currentOutfit,
-      [item.category]: currentOutfit[item.category]?.id === item.id ? null : currentOutfit[item.category],
+    setActiveIndexes((current) => ({
+      ...current,
+      [item.category]: Math.min(current[item.category], Math.max(0, remainingInCategory - 1)),
     }));
     setPendingDelete(null);
     setToast(`${item.name} fue eliminada`);
+  }
+
+  function resetLook() {
+    setActiveIndexes(initialIndexes);
+    setToast("Volvimos al primer look");
   }
 
   return (
     <main className={styles.wardrobePage}>
       <header className={styles.pageIntro}>
         <div>
-          <p className={styles.eyebrow}>Armario interactivo</p>
-          <h1>Arma tu look</h1>
-          <p>Arrastra prendas reales a un lienzo sencillo y combina una pieza de cada sección.</p>
+          <p className={styles.eyebrow}>Closet mix / 01</p>
+          <h1>Mi armario</h1>
         </div>
         <button type="button" className={styles.addGarmentButton} onClick={() => setIsEditorOpen(true)}>
           <span aria-hidden="true">＋</span>Nueva prenda
         </button>
       </header>
 
-      <section className={styles.gameBoard} aria-label="Creador de looks">
-        <aside className={styles.leftCloset} aria-label="Prendas disponibles">
-          {categories.map((category) => (
-            <GarmentRack
-              key={category}
-              category={category}
-              items={items.filter((item) => item.category === category)}
-              onStartDrag={startDragging}
-              onMoveDrag={moveDragging}
-              onFinishDrag={finishDragging}
-              onCancelDrag={() => setDragging(null)}
-              onAskDelete={setPendingDelete}
-            />
-          ))}
-        </aside>
-
-        <section className={styles.fittingRoom} aria-label="Lienzo del look">
-          <div className={styles.stageMessage} aria-live="polite"><span aria-hidden="true" />{message}</div>
-          <div ref={stageRef} className={`${styles.outfitCanvas} ${dragging?.overStage ? styles.outfitCanvasReady : ""}`}>
-            <span className={styles.dropMessage}>Suelta aquí</span>
-            <p className={styles.canvasTitle}>Tu look de hoy</p>
-            {outfit.Tops && <GarmentPicture item={outfit.Tops} className={`${styles.wornItem} ${styles.wornTop}`} />}
-            {outfit.Bottoms && <GarmentPicture item={outfit.Bottoms} className={`${styles.wornItem} ${styles.wornBottom}`} />}
-            {outfit.Zapatos && <GarmentPicture item={outfit.Zapatos} className={`${styles.wornItem} ${styles.wornShoes}`} />}
-            {!Object.values(outfit).some(Boolean) && <p className={styles.emptyCanvas}>Arrastra algo desde la izquierda<br />para comenzar ✦</p>}
-          </div>
-          <button type="button" className={styles.resetButton} disabled={!Object.values(outfit).some(Boolean)} onClick={() => { setOutfit(emptyOutfit); setMessage("Lienzo limpio, empieza otra vez"); }}>Reset</button>
-        </section>
-      </section>
-
-      {dragging && (
-        <div className={styles.dragGhost} style={{ "--drag-x": `${dragging.x}px`, "--drag-y": `${dragging.y}px` } as CSSProperties} aria-hidden="true">
-          <GarmentPicture item={dragging.item} className={styles.draggedPicture} />
+      <section className={styles.outfitMixer} aria-label="Carrusel para crear outfits">
+        <div className={styles.mixerHeading}>
+          <span aria-hidden="true">✦</span>
+          <h2>Outfit de hoy</h2>
+          <span aria-hidden="true">✦</span>
         </div>
-      )}
+
+        <div className={styles.carouselStack}>
+          {categories.map((category) => {
+            const categoryItems = itemsByCategory(category);
+            const safeIndex = categoryItems.length === 0 ? 0 : Math.min(activeIndexes[category], categoryItems.length - 1);
+            return (
+              <GarmentCarousel
+                key={category}
+                category={category}
+                items={categoryItems}
+                activeIndex={safeIndex}
+                onPrevious={() => cycle(category, -1)}
+                onNext={() => cycle(category, 1)}
+                onDelete={setPendingDelete}
+              />
+            );
+          })}
+        </div>
+
+        <footer className={styles.mixerFooter}>
+          <p>Usa las flechas hasta encontrar tu combinación.</p>
+          <button type="button" className={styles.resetButton} onClick={resetLook}>Reset</button>
+        </footer>
+      </section>
 
       {isEditorOpen && <GarmentEditor onClose={() => setIsEditorOpen(false)} onSave={createItem} />}
       {pendingDelete && (
         <div className={styles.confirmToast} role="alertdialog" aria-label={`Confirmar eliminación de ${pendingDelete.name}`}>
-          <div><strong>¿Borrar esta prenda?</strong><small>{pendingDelete.name} desaparecerá del armario.</small></div>
+          <div><strong>¿Borrar esta prenda?</strong><small>{pendingDelete.name}</small></div>
           <button type="button" onClick={() => setPendingDelete(null)}>Cancelar</button>
           <button type="button" onClick={confirmDelete}>Borrar</button>
         </div>
@@ -151,58 +130,32 @@ export function WardrobeStudio() {
   );
 }
 
-function GarmentRack({ category, items, onStartDrag, onMoveDrag, onFinishDrag, onCancelDrag, onAskDelete }: {
+function GarmentCarousel({ category, items, activeIndex, onPrevious, onNext, onDelete }: {
   category: WardrobeCategory;
   items: WardrobeItem[];
-  onStartDrag: (event: ReactPointerEvent<HTMLButtonElement>, item: WardrobeItem) => void;
-  onMoveDrag: (event: ReactPointerEvent<HTMLButtonElement>) => void;
-  onFinishDrag: (event: ReactPointerEvent<HTMLButtonElement>, item: WardrobeItem) => void;
-  onCancelDrag: () => void;
-  onAskDelete: (item: WardrobeItem) => void;
+  activeIndex: number;
+  onPrevious: () => void;
+  onNext: () => void;
+  onDelete: (item: WardrobeItem) => void;
 }) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const safeIndex = items.length === 0 ? 0 : Math.min(activeIndex, items.length - 1);
-  const activeItem = items[safeIndex];
+  const activeItem = items[activeIndex];
 
   return (
-    <section className={styles.rack}>
-      <header className={styles.rackHeader}>
-        <div><h2>{category}</h2><p>{items.length} prendas</p></div>
-        <span>{items.length > 0 ? `${safeIndex + 1}/${items.length}` : "0/0"}</span>
+    <section className={`${styles.carouselSlot} ${styles[`slot${category}`]}`} aria-label={categoryLabels[category]}>
+      <header>
+        <span>{categoryLabels[category]}</span>
+        <small>{items.length > 0 ? `${activeIndex + 1} / ${items.length}` : "0 / 0"}</small>
       </header>
-      <div className={styles.garmentCarousel}>
-        <button
-          type="button"
-          className={styles.carouselArrow}
-          aria-label={`Prenda anterior de ${category}`}
-          disabled={items.length < 2}
-          onClick={() => setActiveIndex((safeIndex - 1 + items.length) % items.length)}
-        >
-          ‹
-        </button>
-
+      <div className={styles.carouselControls}>
+        <button type="button" className={styles.carouselArrow} aria-label={`${categoryLabels[category]} anterior`} disabled={items.length < 2} onClick={onPrevious}>←</button>
         {activeItem ? (
-          <article
-            key={activeItem.id}
-            className={styles.garmentItem}
-            style={{ "--sticker-angle": `${[-4, 3, -2][safeIndex % 3]}deg` } as CSSProperties}
-          >
-            <button type="button" className={styles.dragHandle} aria-label={`${activeItem.name}. Arrastrar al lienzo`} onPointerDown={(event) => onStartDrag(event, activeItem)} onPointerMove={onMoveDrag} onPointerUp={(event) => onFinishDrag(event, activeItem)} onPointerCancel={onCancelDrag}>
-              <GarmentPicture item={activeItem} />
-            </button>
-            <button type="button" className={styles.deleteGarment} aria-label={`Eliminar ${activeItem.name}`} onClick={() => onAskDelete(activeItem)}>×</button>
+          <article key={activeItem.id} className={styles.garmentCard}>
+            <GarmentPicture item={activeItem} />
+            <strong>{activeItem.name}</strong>
+            <button type="button" className={styles.deleteGarment} aria-label={`Eliminar ${activeItem.name}`} onClick={() => onDelete(activeItem)}>×</button>
           </article>
-        ) : <p className={styles.emptyRack}>Sin prendas todavía</p>}
-
-        <button
-          type="button"
-          className={styles.carouselArrow}
-          aria-label={`Prenda siguiente de ${category}`}
-          disabled={items.length < 2}
-          onClick={() => setActiveIndex((safeIndex + 1) % items.length)}
-        >
-          ›
-        </button>
+        ) : <p className={styles.emptySlot}>Agrega una prenda</p>}
+        <button type="button" className={styles.carouselArrow} aria-label={`Siguiente ${categoryLabels[category]}`} disabled={items.length < 2} onClick={onNext}>→</button>
       </div>
     </section>
   );
@@ -237,7 +190,7 @@ function GarmentEditor({ onClose, onSave }: { onClose: () => void; onSave: (item
         <h2 id="garment-editor-title">Añadir al armario</h2>
         <form onSubmit={submit}>
           <label>Nombre<input value={name} onChange={(event) => setName(event.target.value)} maxLength={40} /></label>
-          <label>Categoría<select value={category} onChange={(event) => setCategory(event.target.value as WardrobeCategory)}>{categories.map((option) => <option key={option}>{option}</option>)}</select></label>
+          <label>Categoría<select value={category} onChange={(event) => setCategory(event.target.value as WardrobeCategory)}>{categories.map((option) => <option key={option} value={option}>{categoryLabels[option]}</option>)}</select></label>
           <label className={styles.fileField}>Fotografía<input type="file" accept="image/png,image/jpeg,image/webp" onChange={(event) => readImage(event.target.files?.[0])} /><span>{image ? "Cambiar imagen" : "Elegir imagen"}</span></label>
           {image && <GarmentPicture item={{ id: "preview", name: "Vista previa", category, image, createdAt: "" }} className={styles.editorPreview} />}
           {error && <p className={styles.editorError} role="alert">{error}</p>}

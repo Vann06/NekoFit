@@ -121,7 +121,7 @@
   fill: var(--color-background);
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: 7;
+  stroke-width: 12;
 }
 
 .catTrack {
@@ -133,15 +133,50 @@
   stroke: var(--color-ink);
 }
 
-.catProgress strong {
+.catCalories {
   position: absolute;
-  bottom: 3.6rem;
-  padding: 0.35rem 0.7rem;
-  border-radius: 999px;
-  color: var(--color-background);
-  background: var(--color-ink);
-  font-size: 1.1rem;
+  top: 52%;
+  left: 50%;
+  display: grid;
+  min-width: 9.5rem;
+  padding: 0.65rem 0.8rem;
+  border: 2px solid var(--color-ink);
+  border-radius: 1.2rem;
+  color: var(--color-ink);
+  background: rgb(255 253 244 / 90%);
+  box-shadow: 0 4px 0 var(--color-ink);
+  text-align: center;
+  transform: translate(-50%, -50%) rotate(-1deg);
 }
+
+.catCalories strong { font-size: 1.55rem; line-height: 1; }
+.catCalories small { margin-top: 0.2rem; font-size: 0.55rem; font-weight: 900; text-transform: uppercase; }
+.catCalories b { margin-top: 0.35rem; font-size: 0.68rem; }
+
+.dashboardMacroLayout {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  align-items: center;
+  gap: 0.9rem;
+  margin-block: auto;
+}
+
+.dashboardMacroPie {
+  width: 5.5rem;
+  aspect-ratio: 1;
+  border: 2px solid var(--color-ink);
+  border-radius: 50%;
+  background: conic-gradient(
+    from -90deg,
+    #8f6bb3 0 var(--protein-share),
+    #6c9b55 var(--protein-share) var(--carbs-share),
+    #efc84a var(--carbs-share) 100%
+  );
+  box-shadow: 3px 4px 0 var(--color-ink);
+  transition: transform 180ms ease;
+}
+
+.macroCard:hover .dashboardMacroPie { transform: rotate(8deg) scale(1.04); }
 
 .metricCard,
 .macroCard {
@@ -198,8 +233,7 @@
 
 .macroList {
   display: grid;
-  gap: 0.85rem;
-  margin-block: auto;
+  gap: 0.65rem;
 }
 
 .macroRow {
@@ -208,10 +242,8 @@
 }
 
 .macroHeading {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.75rem;
+  display: grid;
+  gap: 0.1rem;
   font-size: 0.78rem;
 }
 
@@ -257,10 +289,11 @@
   gap: 0.4rem;
 }
 
-.waterGlasses i {
+.waterGlasses button {
   position: relative;
   width: 1.45rem;
   height: 1.75rem;
+  padding: 0;
   overflow: hidden;
   border: 2px solid var(--color-ink);
   border-radius: 0.2rem 0.2rem 0.55rem 0.55rem;
@@ -268,7 +301,7 @@
   box-shadow: inset 0 3px 0 rgb(255 255 255 / 70%);
 }
 
-.waterGlasses i::before {
+.waterGlasses button::before {
   position: absolute;
   right: 2px;
   bottom: 2px;
@@ -282,7 +315,7 @@
   transition: transform 320ms cubic-bezier(0.22, 0.9, 0.3, 1.2);
 }
 
-.waterGlasses i::after {
+.waterGlasses button::after {
   position: absolute;
   top: 0.35rem;
   left: 0.3rem;
@@ -293,38 +326,62 @@
   content: "";
 }
 
-.waterGlasses .glassFilled::before,
-.waterCard:hover .waterGlasses i::before {
+.waterGlasses .glassFilled::before {
   transform: scaleY(1);
 }
 
-.waterGlasses i:nth-child(2)::before {
+.waterGlasses button:nth-child(2)::before {
   transition-delay: 40ms;
 }
 
-.waterGlasses i:nth-child(3)::before {
+.waterGlasses button:nth-child(3)::before {
   transition-delay: 80ms;
 }
 
-.waterGlasses i:nth-child(4)::before {
+.waterGlasses button:nth-child(4)::before {
   transition-delay: 120ms;
 }
 
-.waterGlasses i:nth-child(5)::before {
+.waterGlasses button:nth-child(5)::before {
   transition-delay: 160ms;
 }
 
-.waterGlasses i:nth-child(6)::before {
+.waterGlasses button:nth-child(6)::before {
   transition-delay: 200ms;
 }
 
-.waterGlasses i:nth-child(7)::before {
+.waterGlasses button:nth-child(7)::before {
   transition-delay: 240ms;
 }
 
-.waterGlasses i:nth-child(8)::before {
+.waterGlasses button:nth-child(8)::before {
   transition-delay: 280ms;
 }
+
+.waterActions {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 0.75rem;
+}
+
+.waterActions button {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border: 2px solid var(--color-ink);
+  border-radius: 50%;
+  color: var(--color-background);
+  background: var(--color-ink);
+  font-size: 1.2rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.waterActions span { font-size: 0.72rem; font-weight: 900; text-align: center; }
+.waterCard > a { margin-top: 0.65rem; color: var(--color-ink); font-size: 0.68rem; font-weight: 900; text-align: right; }
 
 .pawSteps {
   display: flex;
@@ -378,14 +435,18 @@
     width: min(100%, 15rem);
   }
 
-  .catProgress strong {
-    bottom: 2.8rem;
-  }
-
   .metricCard,
   .macroCard {
     min-height: 13rem;
   }
+
+  .dashboardMacroLayout { grid-template-columns: 6.5rem 1fr; }
+  .dashboardMacroPie { width: 6.5rem; }
+}
+
+@media (max-width: 390px) {
+  .dashboardMacroLayout { grid-template-columns: 1fr; }
+  .dashboardMacroPie { justify-self: center; }
 }
 
 @media (prefers-reduced-motion: reduce) {

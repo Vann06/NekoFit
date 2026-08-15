@@ -30,10 +30,10 @@ export function useNutritionState() {
     });
   }
 
-  function addFood(date: string, meal: MealKey, food: FoodItem, grams: number) {
+  function addFood(date: string, meal: MealKey, food: FoodItem, grams: number, amount?: number, measureLabel?: string) {
     updateState((currentState) => {
       const currentDay = currentState.diaryDays[date] ?? createEmptyDiaryDay(date);
-      const entry = { id: crypto.randomUUID(), food, grams, macros: scaleFoodMacros(food, grams) };
+      const entry = { id: crypto.randomUUID(), food, grams, amount, measureLabel, macros: scaleFoodMacros(food, grams) };
       return {
         ...currentState,
         diaryDays: {
@@ -57,8 +57,36 @@ export function useNutritionState() {
     });
   }
 
+  function duplicateDiaryDay(sourceDate: string, targetDate: string) {
+    updateState((currentState) => {
+      const sourceDay = currentState.diaryDays[sourceDate] ?? createEmptyDiaryDay(sourceDate);
+      const copiedMeals = Object.fromEntries(Object.entries(sourceDay.meals).map(([meal, entries]) => [
+        meal,
+        entries.map((entry) => ({ ...entry, id: crypto.randomUUID() })),
+      ])) as typeof sourceDay.meals;
+
+      return {
+        ...currentState,
+        diaryDays: {
+          ...currentState.diaryDays,
+          [targetDate]: { date: targetDate, meals: copiedMeals },
+        },
+      };
+    });
+  }
+
   function updateGoals(goals: NutritionGoals) {
     updateState((currentState) => ({ ...currentState, goals }));
+  }
+
+  function updateWater(date: string, glasses: number) {
+    updateState((currentState) => ({
+      ...currentState,
+      waterByDate: {
+        ...currentState.waterByDate,
+        [date]: Math.min(Math.max(Math.round(glasses), 0), 30),
+      },
+    }));
   }
 
   function addPlannedItem(date: string, meal: MealKey, item: Omit<PlannedItem, "id">) {
@@ -96,5 +124,5 @@ export function useNutritionState() {
     });
   }
 
-  return { state, isHydrated, addFood, removeFood, updateGoals, addPlannedItem, removePlannedItem, duplicatePlannedDay };
+  return { state, isHydrated, addFood, removeFood, duplicateDiaryDay, updateGoals, updateWater, addPlannedItem, removePlannedItem, duplicatePlannedDay };
 }

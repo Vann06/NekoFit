@@ -1,11 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "export",
-  trailingSlash: true,
-  images: {
-    unoptimized: true,
-  },
+  // Vercel ejecutará Next.js como aplicación full-stack.
+  // Ya no usamos `output: "export"` porque necesitamos /api/exercises.
 };
 
 export default nextConfig;

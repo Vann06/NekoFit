@@ -6,12 +6,19 @@ export type MacroValues = {
   fiber: number;
 };
 
+export type FoodMeasure = {
+  id: string;
+  label: string;
+  grams: number;
+};
+
 export type FoodItem = {
   id: string;
   name: string;
   detail: string;
   servingLabel: string;
   servingGrams: number;
+  measures?: FoodMeasure[];
   macrosPer100g: MacroValues;
   source: "NekoFit" | "USDA";
 };
@@ -22,6 +29,8 @@ export type LoggedFood = {
   id: string;
   food: FoodItem;
   grams: number;
+  amount?: number;
+  measureLabel?: string;
   macros: MacroValues;
 };
 
@@ -31,6 +40,7 @@ export type DiaryDay = {
 };
 
 export type NutritionGoals = MacroValues & {
+  waterGlasses: number;
   mealCalories: Record<MealKey, number>;
 };
 
@@ -49,8 +59,9 @@ export type PlannedDay = {
 };
 
 export type NutritionState = {
-  version: 1;
+  version: 2;
   goals: NutritionGoals;
   diaryDays: Record<string, DiaryDay>;
   planDays: Record<string, PlannedDay>;
+  waterByDate: Record<string, number>;
 };

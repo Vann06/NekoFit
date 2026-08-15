@@ -111,7 +111,7 @@ export function RecipeGallery() {
           <span aria-hidden="true" />
           {mode === "spoonacular"
             ? "Recetas y macros obtenidos mediante Spoonacular."
-            : "Colección meal-prep local · Spoonacular listo para conectarse mediante proxy."}
+            : "Colección meal-prep local · agrega SPOONACULAR_API_KEY para cargar más recetas."}
         </div>
 
         {error && <p className={styles.errorNote} role="alert">{error}</p>}
