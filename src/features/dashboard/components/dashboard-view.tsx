@@ -27,12 +27,11 @@ export function DashboardView() {
 
   return (
     <main className={styles.dashboard}>
-      <header className={styles.dashboardHeader}>
+      <header className={styles.dashboardHeader} data-page-title>
         <div>
           <p className={styles.dashboardEyebrow}>Resumen diario</p>
           <h1>Tu día en equilibrio</h1>
         </div>
-        <p>Lo importante de hoy, sin llenar formularios complicados.</p>
       </header>
 
       <section className={styles.dashboardGrid} aria-label="Métricas de hoy">

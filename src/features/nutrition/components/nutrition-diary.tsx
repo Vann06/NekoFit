@@ -58,7 +58,7 @@ export function NutritionDiary() {
 
   return (
     <main className={styles.nutritionPage}>
-      <header className={styles.nutritionIntro}>
+      <header className={styles.nutritionIntro} data-page-title>
         <div>
           <p className={styles.eyebrow}>Tu diario de alimentación</p>
           <h1>Comer bien,<br />sin adivinar</h1>
@@ -133,7 +133,7 @@ export function NutritionDiary() {
               <button type="button" className={styles.mealOverview} onClick={() => setDetailMeal(meal.key)}>
                 <span>{entries.length === 0 ? "Nada registrado todavía" : `${entries.length} ${entries.length === 1 ? "alimento registrado" : "alimentos registrados"}`}</span>
                 <strong>{totals.calories} kcal</strong>
-                <b>Ver detalle →</b>
+                <b>Ver detalle ›</b>
               </button>
               <footer className={styles.mealFooter}>
                 <span>{totals.calories} kcal en esta comida</span>

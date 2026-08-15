@@ -3,12 +3,12 @@
 import { type CSSProperties, useEffect, useMemo, useState } from "react";
 
 import { getMealPrepRecipes } from "../services/spoonacular-service";
-import type { MealPrepRecipe, RecipeGoal, RecipeLoadResult } from "../types/recipe";
+import type { MealPrepRecipe, RecipeLoadResult } from "../types/recipe";
 import styles from "../recipes.module.css";
 
-type RecipeFilter = "Todos" | RecipeGoal;
+type RecipeFilter = "Todos" | "Rápidas" | "≤ 500 kcal" | "40 g+ proteína" | "Favoritas";
 
-const recipeFilters: RecipeFilter[] = ["Todos", "Alta proteína", "Balanceado", "Vegetariano", "Desayuno"];
+const recipeFilters: RecipeFilter[] = ["Todos", "Rápidas", "≤ 500 kcal", "40 g+ proteína", "Favoritas"];
 const favoriteStorageKey = "nekofit-meal-prep-favorites";
 
 export function RecipeGallery() {
@@ -50,12 +50,16 @@ export function RecipeGallery() {
   }, []);
 
   const visibleRecipes = useMemo(() => recipes.filter((recipe) => {
-    const matchesFilter = filter === "Todos" || recipe.goal === filter;
+    const matchesFilter = filter === "Todos"
+      || (filter === "Rápidas" && recipe.prepMinutes <= 30)
+      || (filter === "≤ 500 kcal" && recipe.macros.calories <= 500)
+      || (filter === "40 g+ proteína" && recipe.macros.protein >= 40)
+      || (filter === "Favoritas" && favorites.has(recipe.id));
     const normalizedQuery = query.trim().toLocaleLowerCase("es");
     const matchesQuery = normalizedQuery.length === 0
       || `${recipe.name} ${recipe.description}`.toLocaleLowerCase("es").includes(normalizedQuery);
     return matchesFilter && matchesQuery;
-  }), [filter, query, recipes]);
+  }), [favorites, filter, query, recipes]);
 
   function toggleFavorite(recipeId: string) {
     setFavorites((currentFavorites) => {
@@ -69,25 +73,12 @@ export function RecipeGallery() {
 
   return (
     <main className={styles.recipesPage}>
-      <header className={styles.pageIntro}>
+      <header className={styles.pageIntro} data-page-title>
         <div>
           <p className={styles.eyebrow}>Meal prep para tu semana</p>
           <h1>Cocina una vez,<br />come sin drama</h1>
-          <p>Recetas sencillas, sin frituras y con macros por porción para que organizarte no se convierta en otra rutina complicada.</p>
         </div>
-        <aside className={styles.prepNote}>
-          <span aria-hidden="true">4×</span>
-          <strong>Una tanda, cuatro comidas</strong>
-          <p>Prepara, divide y guarda. Cada receta está pensada para repetirse bien durante la semana.</p>
-        </aside>
       </header>
-
-      <section className={styles.prepPrinciples} aria-label="Principios del recetario">
-        <div><strong>25 g+</strong><span>de proteína</span></div>
-        <div><strong>40 min</strong><span>o menos</span></div>
-        <div><strong>4</strong><span>porciones</span></div>
-        <div><strong>0</strong><span>frituras</span></div>
-      </section>
 
       <section className={styles.recipeBook} aria-label="Recetario meal prep">
         <div className={styles.bookTape} aria-hidden="true" />
@@ -95,7 +86,7 @@ export function RecipeGallery() {
         <div className={styles.recipeToolbar}>
           <label className={styles.searchField}>
             <span className={styles.visuallyHidden}>Buscar receta</span>
-            <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Busca pollo, desayuno, tofu..." />
+            <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Busca pollo, arroz, salmón..." />
             <span aria-hidden="true">⌕</span>
           </label>
           <div className={styles.filters} aria-label="Filtrar recetas">

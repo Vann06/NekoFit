@@ -1,11 +1,12 @@
-import { FeaturePlaceholder } from "@/shared/ui/feature-placeholder";
+import type { Metadata } from "next";
+
+import { ProgressStudio } from "@/features/progress/components/progress-studio";
+
+export const metadata: Metadata = {
+  title: "Progreso corporal | NekoFit",
+  description: "Registra peso, grasa, masa muscular, agua corporal y medidas personales.",
+};
 
 export default function ProgressPage() {
-  return (
-    <FeaturePlaceholder
-      eyebrow="Observa la tendencia"
-      title="Progreso"
-      description="Aquí visualizaremos cambios semanales y mensuales en tus mediciones."
-    />
-  );
+  return <ProgressStudio />;
 }

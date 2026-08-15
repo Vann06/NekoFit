@@ -5,10 +5,7 @@
 }
 
 .pageIntro {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(15rem, 21rem);
-  align-items: end;
-  gap: clamp(1.5rem, 5vw, 4rem);
+  display: block;
   margin-bottom: 2rem;
 }
 
@@ -27,7 +24,7 @@
 }
 
 .pageIntro h1 {
-  max-width: 11ch;
+  max-width: 16ch;
   font-size: clamp(3.8rem, 8vw, 7rem);
   line-height: 0.84;
   letter-spacing: -0.075em;
@@ -83,7 +80,7 @@
 
 .prepPrinciples {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 0.8rem;
   margin-bottom: 2.3rem;
 }
@@ -100,9 +97,9 @@
   box-shadow: 0 4px 0 var(--color-ink);
 }
 
-.prepPrinciples div:nth-child(2) { background: var(--color-mint); }
-.prepPrinciples div:nth-child(3) { background: #eee3fa; }
-.prepPrinciples div:nth-child(4) { background: var(--color-yellow); }
+.prepPrinciples div:nth-child(1) { background: var(--color-mint); }
+.prepPrinciples div:nth-child(2) { background: #eee3fa; }
+.prepPrinciples div:nth-child(3) { background: var(--color-yellow); }
 
 .prepPrinciples strong {
   flex: 0 0 auto;

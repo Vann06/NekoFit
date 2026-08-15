@@ -31,7 +31,7 @@ export function WaterCard({ current, goal, onChange }: WaterCardProps) {
         <span>{remaining > 0 ? `${remaining} vasos para tu meta` : "Meta de agua completa"}</span>
         <button type="button" onClick={() => onChange(current + 1)} aria-label="Agregar un vaso">+</button>
       </span>
-      <Link href="/nutrition">Ver alimentación →</Link>
+      <Link href="/nutrition">Ver alimentación ›</Link>
     </article>
   );
 }

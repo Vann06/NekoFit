@@ -6,10 +6,6 @@
 }
 
 .dashboardHeader {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 2rem;
   margin-bottom: 2rem;
 }
 
@@ -17,13 +13,6 @@
   max-width: 12ch;
   font-size: clamp(2.8rem, 7vw, 5.5rem);
   line-height: 0.92;
-}
-
-.dashboardHeader > p {
-  max-width: 25rem;
-  margin: 0;
-  font-size: 1.05rem;
-  line-height: 1.55;
 }
 
 .dashboardEyebrow,
@@ -65,9 +54,9 @@
 
 .calorieCard {
   display: grid;
-  min-height: 22rem;
+  min-height: 25rem;
   grid-column: 1 / -1;
-  grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.75fr);
+  grid-template-columns: minmax(0, 0.9fr) minmax(19rem, 1.1fr);
   align-items: center;
   padding: clamp(1.5rem, 4vw, 3rem);
   overflow: hidden;
@@ -111,7 +100,7 @@
 }
 
 .catProgress svg {
-  width: min(100%, 19rem);
+  width: min(100%, 25rem);
   overflow: visible;
   fill: var(--color-ink);
 }
@@ -432,7 +421,7 @@
   }
 
   .catProgress svg {
-    width: min(100%, 15rem);
+    width: min(100%, 19rem);
   }
 
   .metricCard,

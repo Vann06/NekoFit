@@ -1,0 +1,105 @@
+.progressPage {
+  width: min(calc(100% - 2rem), 76rem);
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 3.5rem) 0 5rem;
+}
+
+.progressIntro {
+  margin-bottom: 2rem;
+  padding: clamp(1.3rem, 4vw, 2.5rem);
+  border: 2px solid var(--color-ink);
+  border-radius: 2.4rem;
+  background: var(--color-mint);
+  box-shadow: 0 8px 0 var(--color-ink);
+}
+
+.progressIntro p { margin: 0 0 0.6rem; font-size: 0.75rem; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; }
+.progressIntro h1 { font-size: clamp(3.5rem, 9vw, 7rem); }
+
+.progressLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.65fr);
+  align-items: start;
+  gap: 1rem;
+}
+
+.measurementForm,
+.progressSummary,
+.historySection {
+  border: 2px solid var(--color-ink);
+  background: #fffdf4;
+  box-shadow: 0 7px 0 var(--color-ink);
+}
+
+.measurementForm { padding: clamp(1rem, 3vw, 1.8rem); border-radius: 2rem 1.6rem 2.3rem 1.75rem; }
+.measurementForm > header { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.2rem; }
+.measurementForm > header > span { display: grid; width: 2.5rem; height: 2.5rem; place-items: center; border: 2px solid var(--color-ink); border-radius: 50%; background: var(--color-yellow); font-weight: 900; }
+.measurementForm header small { font-size: 0.62rem; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; }
+.measurementForm h2 { margin: 0.1rem 0 0; font-size: clamp(1.8rem, 5vw, 2.8rem); }
+
+.measurementForm label { display: grid; gap: 0.4rem; font-size: 0.68rem; font-weight: 900; text-transform: uppercase; }
+.measurementForm input { width: 100%; min-height: 3.1rem; padding: 0.65rem 0.8rem; border: 2px solid var(--color-ink); border-radius: 0.9rem; color: var(--color-ink); background: var(--color-background); font-weight: 850; }
+.dateField { margin-bottom: 0.9rem; }
+
+.mainMeasurements { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+.mainMeasurements label { padding: 0.85rem; border: 1.5px solid var(--color-ink); border-radius: 1rem 1.3rem 0.9rem 1.1rem; background: var(--color-mint); }
+.mainMeasurements label:nth-child(2) { background: #eee3fa; }
+.mainMeasurements label:nth-child(3) { background: var(--color-lime); }
+.mainMeasurements label:nth-child(4) { background: #dceff3; }
+.mainMeasurements label > span,
+.extraMeasurements label > span { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.mainMeasurements small,
+.extraMeasurements small { font-size: 0.58rem; opacity: 0.65; }
+
+.extraMeasurements { margin-top: 0.9rem; border: 2px solid var(--color-ink); border-radius: 1rem; background: var(--color-background); }
+.extraMeasurements summary { display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 1rem; list-style: none; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; }
+.extraMeasurements summary::-webkit-details-marker { display: none; }
+.extraMeasurements[open] summary span { rotate: 45deg; }
+.extraMeasurements summary span { font-size: 1.4rem; transition: rotate 160ms ease; }
+.extraMeasurements > div { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.65rem; padding: 0 0.85rem 0.9rem; }
+
+.saveMeasurement { width: 100%; min-height: 3.4rem; margin-top: 1rem; border: 2px solid var(--color-ink); border-radius: 999px; color: var(--color-ink); background: var(--color-yellow); box-shadow: 0 5px 0 var(--color-ink); font-weight: 900; }
+.saveMeasurement:hover { translate: 0 -2px; box-shadow: 0 7px 0 var(--color-ink); }
+
+.progressSummary { position: relative; padding: 1.5rem; border-radius: 1.6rem 2rem 1.7rem 2.2rem; background: var(--color-lime); rotate: 0.5deg; }
+.summarySticker { display: inline-block; margin-bottom: 1rem; padding: 0.4rem 0.7rem; border: 1.5px solid var(--color-ink); background: var(--color-background); font-size: 0.62rem; font-weight: 900; rotate: -2deg; }
+.progressSummary h2 { margin: 0; font-size: clamp(1.8rem, 4vw, 2.6rem); }
+.progressSummary > time { display: block; margin: 0.45rem 0 1rem; font-size: 0.72rem; font-weight: 850; }
+.latestMetrics { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.55rem; }
+.latestMetrics > div { display: grid; gap: 0.2rem; padding: 0.7rem; border: 1.5px solid var(--color-ink); border-radius: 0.9rem; background: #fffdf4; }
+.latestMetrics small { font-size: 0.6rem; font-weight: 900; text-transform: uppercase; }
+.latestMetrics strong { font-size: 1.3rem; }
+.latestMetrics strong span { margin-left: 0.15rem; font-size: 0.62rem; }
+.changeNote,
+.emptySummary { margin: 1rem 0 0; font-size: 0.75rem; line-height: 1.5; }
+
+.historySection { margin-top: 1rem; padding: clamp(1rem, 3vw, 1.6rem); border-radius: 1.8rem; }
+.historySection > header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; gap: 1rem; }
+.historySection > header > div { display: flex; align-items: baseline; gap: 0.65rem; }
+.historySection h2 { margin: 0; font-size: clamp(1.8rem, 5vw, 2.7rem); }
+.historySection header small,
+.historySection header > span { font-size: 0.68rem; font-weight: 900; text-transform: uppercase; }
+.historyList { display: grid; gap: 0.55rem; }
+.historyList article { display: grid; grid-template-columns: minmax(9rem, 1.3fr) repeat(3, 1fr) auto; align-items: center; gap: 0.75rem; padding: 0.8rem 0.9rem; border: 1.5px solid var(--color-ink); border-radius: 0.9rem; background: var(--color-background); font-size: 0.72rem; font-weight: 800; }
+.historyList article:nth-child(even) { background: var(--color-mint); }
+.historyList time { font-weight: 900; }
+.historyList button { display: grid; width: 1.8rem; height: 1.8rem; place-items: center; padding: 0; border: 1.5px solid var(--color-ink); border-radius: 50%; color: white; background: var(--color-ink); font-weight: 900; }
+.emptyHistory { margin: 0; padding: 1.3rem; border: 1.5px dashed var(--color-ink); border-radius: 1rem; text-align: center; }
+
+.progressToast { position: fixed; z-index: 1200; right: 1rem; bottom: 1rem; max-width: calc(100% - 2rem); padding: 0.9rem 1.1rem; border: 2px solid var(--color-ink); border-radius: 1rem; color: white; background: var(--color-ink); box-shadow: 0 5px 0 #8f6bb3; font-size: 0.75rem; font-weight: 900; }
+
+@media (max-width: 800px) {
+  .progressPage { width: min(calc(100% - 1.3rem), 42rem); padding-top: 1rem; }
+  .progressLayout { grid-template-columns: 1fr; }
+  .progressSummary { rotate: 0deg; }
+  .historyList article { grid-template-columns: 1fr 1fr auto; }
+  .historyList article span:nth-of-type(2),
+  .historyList article span:nth-of-type(3) { display: none; }
+}
+
+@media (max-width: 480px) {
+  .mainMeasurements { grid-template-columns: 1fr; }
+  .extraMeasurements > div { grid-template-columns: 1fr 1fr; }
+  .historyList article { grid-template-columns: 1fr auto; }
+  .historyList article span { display: none; }
+}

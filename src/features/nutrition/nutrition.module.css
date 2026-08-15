@@ -808,6 +808,42 @@
 .dayColumn > header strong { grid-row: 1 / span 2; grid-column: 2; font-size: 1.7rem; }
 .dayColumn > header small { font-size: 0.58rem; font-weight: 800; }
 
+.calendarWater {
+  display: grid;
+  grid-template-columns: 1.6rem 1fr 1.6rem;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.45rem;
+  border-bottom: 1px dashed rgb(36 69 46 / 35%);
+  background: #dceff3;
+}
+
+.calendarWaterComplete { background: var(--color-lime); }
+
+.calendarWater button {
+  display: grid;
+  width: 1.6rem;
+  height: 1.6rem;
+  place-items: center;
+  padding: 0;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 50%;
+  color: var(--color-background);
+  background: var(--color-ink);
+  font-size: 0.9rem;
+  font-weight: 900;
+}
+
+.calendarWater span {
+  font-size: 0.56rem;
+  font-weight: 850;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.calendarWater i { color: #72bfd1; font-size: 0.7rem; font-style: normal; }
+.calendarWaterComplete i { color: var(--color-ink); }
+
 .planSlots { display: grid; }
 
 .planSlot {

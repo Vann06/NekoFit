@@ -14,7 +14,7 @@ export function GarmentPicture({ item, className = "" }: GarmentPictureProps) {
         "--sprite-position": item.image.position,
         "--sprite-size": item.image.size ?? "300%",
       } as CSSProperties
-    : { backgroundImage: `url("${item.image.dataUrl}")` };
+    : { backgroundImage: `url("${item.image.kind === "cloudinary" ? item.image.displayUrl : item.image.dataUrl}")` };
 
   return (
     <span

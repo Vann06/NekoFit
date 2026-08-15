@@ -99,8 +99,11 @@ export function TopMenu() {
 
   return (
     <>
+      <div className={styles.headerLayers} aria-hidden="true">
+        <span className={styles.headerBands} />
+      </div>
+
       <header className={styles.header}>
-        <span className={styles.headerBands} aria-hidden="true" />
         <span className={styles.headerTag}>Bienestar a tu ritmo</span>
 
         <button

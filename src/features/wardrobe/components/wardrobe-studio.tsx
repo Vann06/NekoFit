@@ -4,7 +4,8 @@ import { type FormEvent, useEffect, useState } from "react";
 
 import { defaultGarments } from "../data/default-garments";
 import { deleteWardrobeItem, getWardrobeItems, saveWardrobeItem } from "../repositories/wardrobe-repository";
-import type { GarmentImage, WardrobeCategory, WardrobeItem } from "../types/wardrobe-item";
+import { deleteWardrobeImage, uploadWardrobeImage } from "../services/cloudinary-wardrobe-service";
+import type { WardrobeCategory, WardrobeItem } from "../types/wardrobe-item";
 import { GarmentPicture } from "./garment-picture";
 import styles from "../wardrobe.module.css";
 
@@ -59,6 +60,9 @@ export function WardrobeStudio() {
     if (!pendingDelete) return;
     const item = pendingDelete;
     await deleteWardrobeItem(item.id);
+    if (item.image.kind === "cloudinary") {
+      deleteWardrobeImage(item.image.publicId).catch(() => setToast("La prenda se quitó del armario, pero revisa Cloudinary."));
+    }
     const remainingInCategory = itemsByCategory(item.category).filter((currentItem) => currentItem.id !== item.id).length;
     setItems((currentItems) => currentItems.filter((currentItem) => currentItem.id !== item.id));
     setActiveIndexes((current) => ({
@@ -66,17 +70,27 @@ export function WardrobeStudio() {
       [item.category]: Math.min(current[item.category], Math.max(0, remainingInCategory - 1)),
     }));
     setPendingDelete(null);
-    setToast(`${item.name} fue eliminada`);
+    setToast("La prenda fue eliminada");
   }
 
-  function resetLook() {
-    setActiveIndexes(initialIndexes);
-    setToast("Volvimos al primer look");
+  function shuffleLook() {
+    setActiveIndexes((currentIndexes) => categories.reduce<Record<WardrobeCategory, number>>((nextIndexes, category) => {
+      const total = itemsByCategory(category).length;
+      if (total <= 1) {
+        nextIndexes[category] = 0;
+        return nextIndexes;
+      }
+
+      const jump = Math.floor(Math.random() * (total - 1)) + 1;
+      nextIndexes[category] = (currentIndexes[category] + jump) % total;
+      return nextIndexes;
+    }, { ...initialIndexes }));
+    setToast("Mezclamos un outfit nuevo ✦");
   }
 
   return (
     <main className={styles.wardrobePage}>
-      <header className={styles.pageIntro}>
+      <header className={styles.pageIntro} data-page-title>
         <div>
           <p className={styles.eyebrow}>Closet mix / 01</p>
           <h1>Mi armario</h1>
@@ -112,8 +126,9 @@ export function WardrobeStudio() {
         </div>
 
         <footer className={styles.mixerFooter}>
-          <p>Usa las flechas hasta encontrar tu combinación.</p>
-          <button type="button" className={styles.resetButton} onClick={resetLook}>Reset</button>
+          <button type="button" className={styles.shuffleButton} onClick={shuffleLook} aria-label="Crear un outfit aleatorio">
+            <ShuffleIcon />
+          </button>
         </footer>
       </section>
 
@@ -147,39 +162,54 @@ function GarmentCarousel({ category, items, activeIndex, onPrevious, onNext, onD
         <small>{items.length > 0 ? `${activeIndex + 1} / ${items.length}` : "0 / 0"}</small>
       </header>
       <div className={styles.carouselControls}>
-        <button type="button" className={styles.carouselArrow} aria-label={`${categoryLabels[category]} anterior`} disabled={items.length < 2} onClick={onPrevious}>←</button>
+        <button type="button" className={styles.carouselArrow} aria-label={`${categoryLabels[category]} anterior`} disabled={items.length < 2} onClick={onPrevious}>‹</button>
         {activeItem ? (
           <article key={activeItem.id} className={styles.garmentCard}>
             <GarmentPicture item={activeItem} />
-            <strong>{activeItem.name}</strong>
             <button type="button" className={styles.deleteGarment} aria-label={`Eliminar ${activeItem.name}`} onClick={() => onDelete(activeItem)}>×</button>
           </article>
         ) : <p className={styles.emptySlot}>Agrega una prenda</p>}
-        <button type="button" className={styles.carouselArrow} aria-label={`Siguiente ${categoryLabels[category]}`} disabled={items.length < 2} onClick={onNext}>→</button>
+        <button type="button" className={styles.carouselArrow} aria-label={`Siguiente ${categoryLabels[category]}`} disabled={items.length < 2} onClick={onNext}>›</button>
       </div>
     </section>
   );
 }
 
 function GarmentEditor({ onClose, onSave }: { onClose: () => void; onSave: (item: WardrobeItem) => Promise<void> }) {
-  const [name, setName] = useState("");
   const [category, setCategory] = useState<WardrobeCategory>("Tops");
-  const [image, setImage] = useState<GarmentImage | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState("");
 
   function readImage(file?: File) {
     if (!file) return;
     if (!file.type.startsWith("image/")) { setError("Selecciona una imagen válida."); return; }
-    if (file.size > 2_500_000) { setError("La imagen debe pesar menos de 2.5 MB."); return; }
+    if (file.size > 4_000_000) { setError("La imagen debe pesar menos de 4 MB."); return; }
     const reader = new FileReader();
-    reader.onload = () => { setImage({ kind: "upload", dataUrl: String(reader.result) }); setError(""); };
+    reader.onload = () => { setPreview(String(reader.result)); setFile(file); setError(""); };
     reader.readAsDataURL(file);
   }
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!name.trim() || !image) { setError("Agrega un nombre y una fotografía."); return; }
-    await onSave({ id: crypto.randomUUID(), name: name.trim(), category, image, createdAt: new Date().toISOString() });
+    if (!file) { setError("Agrega una fotografía de la prenda."); return; }
+    setIsUploading(true);
+    setError("");
+    try {
+      const uploadedImage = await uploadWardrobeImage(file);
+      const fileName = file.name.replace(/\.[^.]+$/, "").trim() || categoryLabels[category];
+      await onSave({
+        id: crypto.randomUUID(),
+        name: fileName,
+        category,
+        image: { kind: "cloudinary", ...uploadedImage },
+        createdAt: new Date().toISOString(),
+      });
+    } catch (uploadError) {
+      setError(uploadError instanceof Error ? uploadError.message : "No fue posible guardar la prenda.");
+      setIsUploading(false);
+    }
   }
 
   return (
@@ -189,14 +219,25 @@ function GarmentEditor({ onClose, onSave }: { onClose: () => void; onSave: (item
         <p className={styles.editorEyebrow}>Nueva pieza</p>
         <h2 id="garment-editor-title">Añadir al armario</h2>
         <form onSubmit={submit}>
-          <label>Nombre<input value={name} onChange={(event) => setName(event.target.value)} maxLength={40} /></label>
           <label>Categoría<select value={category} onChange={(event) => setCategory(event.target.value as WardrobeCategory)}>{categories.map((option) => <option key={option} value={option}>{categoryLabels[option]}</option>)}</select></label>
-          <label className={styles.fileField}>Fotografía<input type="file" accept="image/png,image/jpeg,image/webp" onChange={(event) => readImage(event.target.files?.[0])} /><span>{image ? "Cambiar imagen" : "Elegir imagen"}</span></label>
-          {image && <GarmentPicture item={{ id: "preview", name: "Vista previa", category, image, createdAt: "" }} className={styles.editorPreview} />}
+          <label className={styles.fileField}>Fotografía<input type="file" accept="image/png,image/jpeg,image/webp" onChange={(event) => readImage(event.target.files?.[0])} /><span>{preview ? "Cambiar imagen" : "Elegir imagen"}</span></label>
+          {preview && <GarmentPicture item={{ id: "preview", name: "Vista previa", category, image: { kind: "upload", dataUrl: preview }, createdAt: "" }} className={styles.editorPreview} />}
+          <p className={styles.cloudinaryNote}>Cloudinary guardará la foto y NekoFit mostrará una versión PNG sin fondo.</p>
           {error && <p className={styles.editorError} role="alert">{error}</p>}
-          <button type="submit" className={styles.saveGarmentButton}>Guardar prenda</button>
+          <button type="submit" className={styles.saveGarmentButton} disabled={isUploading}>{isUploading ? "Quitando fondo…" : "Guardar prenda"}</button>
         </form>
       </section>
     </div>
+  );
+}
+
+function ShuffleIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M4 7h2.5c4.8 0 5.1 10 10 10H20" />
+      <path d="m17 14 3 3-3 3" />
+      <path d="M4 17h2.5c2.2 0 3.4-2.1 4.5-4.4C12.3 9.8 13.5 7 16.5 7H20" />
+      <path d="m17 4 3 3-3 3" />
+    </svg>
   );
 }

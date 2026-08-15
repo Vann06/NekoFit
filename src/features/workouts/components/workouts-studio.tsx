@@ -60,8 +60,8 @@ function ExerciseGuideCard({ entry, index, total, editing, onUpdate, onRemove, o
         <ExerciseVisual exercise={entry.exercise} />
         {editing && (
           <div className={styles.cardActions}>
-            <button type="button" disabled={index === 0} onClick={() => onMove(-1)} aria-label={`Mover ${entry.exercise.name} hacia atrás`}>←</button>
-            <button type="button" disabled={index === total - 1} onClick={() => onMove(1)} aria-label={`Mover ${entry.exercise.name} hacia adelante`}>→</button>
+            <button type="button" disabled={index === 0} onClick={() => onMove(-1)} aria-label={`Mover ${entry.exercise.name} hacia atrás`}>‹</button>
+            <button type="button" disabled={index === total - 1} onClick={() => onMove(1)} aria-label={`Mover ${entry.exercise.name} hacia adelante`}>›</button>
             <button type="button" onClick={onRemove} aria-label={`Quitar ${entry.exercise.name}`}>×</button>
           </div>
         )}
@@ -288,19 +288,19 @@ export function WorkoutsStudio() {
 
   return (
     <main className={styles.page}>
-      <section className={styles.hero}>
+      <section className={styles.hero} data-page-title>
         <div><p>Guía rápida / 01</p><h1>Entrenos</h1></div>
         <button type="button" className={styles.heroAdd} onClick={handleCreate}><span>＋</span><b>Nueva rutina</b></button>
       </section>
 
       <nav className={styles.routinePager} aria-label="Hojear rutinas">
-        <button type="button" onClick={() => browse(-1)} disabled={state.workouts.length < 2} aria-label="Rutina anterior">←</button>
+        <button type="button" onClick={() => browse(-1)} disabled={state.workouts.length < 2} aria-label="Rutina anterior">‹</button>
         <div>
           <small>{String(selectedIndex + 1).padStart(2, "0")} / {String(state.workouts.length).padStart(2, "0")}</small>
           {editing ? <input value={selectedWorkout.name} aria-label="Nombre de la rutina" onChange={(event) => updateWorkout(selectedWorkout.id, { name: event.target.value })} /> : <h2>{selectedWorkout.name}</h2>}
           <p>{categoryLabel(selectedWorkout)} · {selectedWorkout.estimatedMinutes} min</p>
         </div>
-        <button type="button" onClick={() => browse(1)} disabled={state.workouts.length < 2} aria-label="Rutina siguiente">→</button>
+        <button type="button" onClick={() => browse(1)} disabled={state.workouts.length < 2} aria-label="Rutina siguiente">›</button>
       </nav>
 
       <div className={styles.pagerDots} aria-hidden="true">

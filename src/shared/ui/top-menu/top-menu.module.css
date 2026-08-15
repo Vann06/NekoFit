@@ -1,15 +1,25 @@
-.header {
+.header,
+.headerLayers {
   position: absolute;
-  z-index: 89;
   top: 0.75rem;
-  left: 1rem;
-  display: grid;
-  width: calc(100% - 2rem);
+  left: 50%;
+  width: calc(100vw - var(--page-shell-gutter) - var(--page-shell-gutter));
   min-height: 6.75rem;
+  transform: translateX(-50%);
+}
+
+.header {
+  z-index: 89;
+  display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   padding: 0.75rem clamp(1rem, 3vw, 2.25rem);
   background: transparent;
+}
+
+.headerLayers {
+  z-index: 10;
+  pointer-events: none;
 }
 
 .headerBands,
@@ -24,33 +34,31 @@
 }
 
 .headerBands {
-  z-index: -1;
+  z-index: 0;
   top: 2.75rem;
-  height: 4rem;
-  border-radius: 2.75rem 2.75rem 1.25rem 1.25rem;
+  height: 5.5rem;
+  border-radius: 2.75rem;
   background: var(--color-lime);
 }
 
 .headerBands::before,
 .headerBands::after {
-  right: -2px;
-  left: -2px;
-  border-top: 0;
-  border-radius: 0 0 1.5rem 1.5rem;
-  rotate: 180deg;
+  right: 0;
+  left: 0;
+  border-radius: 2.75rem;
 }
 
 .headerBands::before {
-  z-index: -1;
-  top: calc(100% - 0.15rem);
-  height: 1.15rem;
+  z-index: 1;
+  top: 2.25rem;
+  height: 3.3rem;
   background: var(--color-yellow);
 }
 
 .headerBands::after {
-  z-index: -2;
-  top: calc(100% + 0.8rem);
-  height: 1rem;
+  z-index: 2;
+  top: 3.25rem;
+  height: 2.35rem;
   background: var(--color-ink);
 }
 
@@ -370,18 +378,35 @@
 }
 
 @media (max-width: 900px) {
-  .header {
+  .header,
+  .headerLayers {
     top: 0.6rem;
-    left: 0.65rem;
-    width: calc(100% - 1.3rem);
     min-height: 5.5rem;
+  }
+
+  .header {
     grid-template-columns: 1fr auto 1fr;
   }
 
   .headerBands {
     top: 2.15rem;
-    height: 3.35rem;
-    border-radius: 2rem 2rem 1rem 1rem;
+    height: 5.05rem;
+    border-radius: 1.9rem;
+  }
+
+  .headerBands::before,
+  .headerBands::after {
+    border-radius: 1.9rem;
+  }
+
+  .headerBands::before {
+    top: 2.05rem;
+    height: 3.05rem;
+  }
+
+  .headerBands::after {
+    top: 3.2rem;
+    height: 3rem;
   }
 
   .logo {
@@ -436,24 +461,29 @@
 }
 
 @media (max-width: 520px) {
-  .header {
+  .header,
+  .headerLayers {
     min-height: 5rem;
+  }
+
+  .header {
     padding: 0.75rem;
   }
 
   .headerBands {
     top: 1.9rem;
-    height: 3.1rem;
-    border-radius: 1.75rem 1.75rem 0.9rem 0.9rem;
+    height: 4.45rem;
+    border-radius: 1.9rem;
   }
 
   .headerBands::before {
-    height: 0.8rem;
+    top: 1.75rem;
+    height: 2.75rem;
   }
 
   .headerBands::after {
-    top: calc(100% + 0.5rem);
-    height: 0.75rem;
+    top: 2.7rem;
+    height: 1.8rem;
   }
 
   .headerTag {

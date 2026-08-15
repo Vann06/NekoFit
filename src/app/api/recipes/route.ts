@@ -11,7 +11,7 @@ export async function GET() {
 
   const upstreamUrl = new URL(spoonacularSearchUrl);
   upstreamUrl.searchParams.set("type", "main course");
-  upstreamUrl.searchParams.set("number", "12");
+  upstreamUrl.searchParams.set("number", "18");
   upstreamUrl.searchParams.set("instructionsRequired", "true");
   upstreamUrl.searchParams.set("addRecipeInformation", "true");
   upstreamUrl.searchParams.set("addRecipeInstructions", "true");

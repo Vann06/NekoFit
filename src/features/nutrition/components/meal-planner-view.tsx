@@ -18,7 +18,7 @@ function formatWeekDay(dateKey: string) {
 }
 
 export function MealPlannerView() {
-  const { state, addFood, removeFood, duplicateDiaryDay } = useNutritionState();
+  const { state, addFood, removeFood, duplicateDiaryDay, updateWater } = useNutritionState();
   const [weekStart, setWeekStart] = useState(() => getWeekStart(getLocalDateKey()));
   const [editingSlot, setEditingSlot] = useState<{ date: string; meal: MealKey } | null>(null);
   const [detailSlot, setDetailSlot] = useState<{ date: string; meal: MealKey } | null>(null);
@@ -36,7 +36,7 @@ export function MealPlannerView() {
 
   return (
     <main className={styles.nutritionPage}>
-      <header className={styles.nutritionIntro}>
+      <header className={styles.nutritionIntro} data-page-title>
         <div>
           <p className={styles.eyebrow}>Organiza antes de cocinar</p>
           <h1>Tu semana,<br />comida resuelta</h1>
@@ -64,10 +64,17 @@ export function MealPlannerView() {
             const day = state.diaryDays[date] ?? createEmptyDiaryDay(date);
             const dayItems = Object.values(day.meals).flat();
             const totalCalories = sumMacros(dayItems).calories;
+            const waterCount = state.waterByDate[date] ?? 0;
+            const waterComplete = waterCount >= state.goals.waterGlasses;
             const formatted = formatWeekDay(date);
             return (
               <article key={date} className={`${styles.dayColumn} ${date === getLocalDateKey() ? styles.todayColumn : ""}`}>
                 <header><span>{formatted.day}</span><strong>{formatted.date}</strong><small>{totalCalories} kcal</small></header>
+                <div className={`${styles.calendarWater} ${waterComplete ? styles.calendarWaterComplete : ""}`}>
+                  <button type="button" aria-label={`Quitar agua del ${date}`} onClick={() => updateWater(date, waterCount - 1)}>−</button>
+                  <span><i aria-hidden="true">●</i> Agua <b>{waterComplete ? "✓" : `${waterCount}/${state.goals.waterGlasses}`}</b></span>
+                  <button type="button" aria-label={`Agregar agua al ${date}`} onClick={() => updateWater(date, waterCount + 1)}>+</button>
+                </div>
                 <div className={styles.planSlots}>
                   {mealDefinitions.map((meal) => {
                     const entries = day.meals[meal.key];
@@ -86,7 +93,7 @@ export function MealPlannerView() {
                     );
                   })}
                 </div>
-                <button type="button" className={styles.duplicateDayButton} onClick={() => { duplicateDiaryDay(date, addDays(date, 1)); showToast(`Copiamos ${formatted.day} al día siguiente.`); }}>Duplicar →</button>
+                <button type="button" className={styles.duplicateDayButton} onClick={() => { duplicateDiaryDay(date, addDays(date, 1)); showToast(`Copiamos ${formatted.day} al día siguiente.`); }}>Duplicar ›</button>
               </article>
             );
           })}
