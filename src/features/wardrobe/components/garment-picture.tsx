@@ -27,7 +27,6 @@ function UploadedPicture({
 }: UploadedPictureProps) {
   const [stage, setStage] = useState<LoadStage>("cutout");
   const [imageKey, setImageKey] = useState(0);
-  const isLoaded = stage === "retry" ? false : undefined;
   const [loaded, setLoaded] = useState(false);
 
   const source = stage === "original" && fallbackSource
