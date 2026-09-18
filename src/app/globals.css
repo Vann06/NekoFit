@@ -32,6 +32,26 @@ body {
   padding-top: 9.2rem;
 }
 
+.offline-page {
+  display: grid;
+  width: min(calc(100% - 2rem), 38rem);
+  min-height: calc(100vh - 11rem);
+  place-content: center;
+  justify-items: center;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.offline-page > span { font-size: 3rem; }
+.offline-page h1 { margin: 0.3rem 0; font-size: clamp(2.4rem, 9vw, 5rem); letter-spacing: -0.06em; }
+.offline-page p { max-width: 31rem; font-weight: 750; line-height: 1.5; }
+
+@media (display-mode: standalone) {
+  body { padding-bottom: env(safe-area-inset-bottom); }
+  .site-content { padding-top: calc(9.2rem + env(safe-area-inset-top)); }
+}
+
 .tracker-layout {
   min-height: inherit;
   margin-top: -0.85rem;
