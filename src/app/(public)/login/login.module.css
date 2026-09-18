@@ -1,0 +1,53 @@
+.page {
+  display: grid;
+  min-height: calc(100vh - 9.2rem);
+  place-items: center;
+  padding: 2rem 1rem;
+  background: radial-gradient(circle, rgb(143 107 179 / 18%) 0 0.16rem, transparent 0.19rem);
+  background-size: 4rem 4rem;
+}
+
+.card {
+  width: min(100%, 34rem);
+  padding: clamp(1.5rem, 5vw, 3.2rem);
+  border: 2px solid var(--color-ink);
+  border-radius: 2.5rem;
+  background: #fffdf7;
+  box-shadow: 10px 11px 0 var(--color-ink);
+  text-align: center;
+}
+
+.cat {
+  display: grid;
+  width: 6rem;
+  height: 6rem;
+  place-items: center;
+  margin: 0 auto 1rem;
+  border: 2px solid var(--color-ink);
+  border-radius: 42% 58% 48% 52%;
+  background: var(--color-lime);
+  box-shadow: 5px 6px 0 var(--color-ink);
+  font-size: 1.5rem;
+  rotate: -3deg;
+}
+
+.eyebrow {
+  width: fit-content;
+  margin: 0 auto 0.6rem;
+  padding: 0.35rem 0.75rem;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 999px;
+  background: var(--color-yellow);
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.card h1 { margin: 0; font-size: clamp(2.7rem, 8vw, 5rem); letter-spacing: -0.06em; }
+.copy { max-width: 27rem; margin: 0.7rem auto 1.4rem; font-weight: 700; line-height: 1.5; }
+.card > div button { display: flex; width: 100%; min-height: 3.6rem; align-items: center; justify-content: center; gap: 0.7rem; border: 2px solid var(--color-ink); border-radius: 999px; color: var(--color-background); background: var(--color-ink); box-shadow: 0 5px 0 #8f6bb3; font-weight: 900; }
+.card > div button span { display: grid; width: 2rem; height: 2rem; place-items: center; border-radius: 50%; color: var(--color-ink); background: var(--color-background); }
+.card > div button:disabled { opacity: 0.65; }
+.card small { display: block; margin-top: 1.2rem; font-weight: 700; }
+.error { padding: 0.75rem; border: 1.5px solid var(--color-ink); border-radius: 0.8rem; background: #ffd5ca; font-size: 0.85rem; font-weight: 800; }
